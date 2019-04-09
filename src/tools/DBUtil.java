@@ -46,7 +46,7 @@ public class DBUtil {
 			crs = new CachedRowSetImpl();
 			Connection conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery(sql);
+			ResultSet rs = ps.executeQuery();
 			crs.populate(rs);
 			rs.close();
 			ps.close();
@@ -67,7 +67,7 @@ public class DBUtil {
 			for(int i=0;i<params.length;i++) {
 				ps.setString(i+1, params[i]);
 			}
-			ResultSet rs = ps.executeQuery(sql);
+			ResultSet rs = ps.executeQuery();
 			crs.populate(rs);
 			rs.close();
 			ps.close();
@@ -76,6 +76,11 @@ public class DBUtil {
 			e.printStackTrace();
 		}
 		return crs;
+	}
+	
+	//init the database
+	public static void init() throws SQLException {
+		
 	}
 	
 }
