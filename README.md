@@ -2,7 +2,7 @@
 
 CS 591 Object Oriented Design and Development in Java @ Boston University
 
-### Group Members
+## Group Members
 
 Emmanuel Amponsah
 
