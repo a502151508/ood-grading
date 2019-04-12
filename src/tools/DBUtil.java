@@ -10,6 +10,7 @@ import java.sql.Statement;
 import javax.sql.rowset.CachedRowSet;
 
 import com.sun.rowset.CachedRowSetImpl;
+
 public class DBUtil {
 	public static Connection getConnection() {
 		Connection c = null;
@@ -23,7 +24,8 @@ public class DBUtil {
 		System.out.println("Opened database successfully");
 		return c;
 	}
-	//execute a sql statement
+
+	// execute a sql statement
 	public static boolean dosql(String sql) {
 		boolean isSucceed = false;
 		Connection conn = getConnection();
@@ -39,9 +41,9 @@ public class DBUtil {
 		return isSucceed;
 	}
 
-	//retrieve data with no user input
-	public static CachedRowSet select(String sql) {
-		CachedRowSet crs=null;
+	// retrieve data with no user input
+	public static CachedRowSet select(String sql) throws SQLException {
+		CachedRowSet crs = null;
 		try {
 			crs = new CachedRowSetImpl();
 			Connection conn = getConnection();
@@ -54,18 +56,20 @@ public class DBUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 		return crs;
+
 	}
-	
-	//retrieve data with user input
-	public static CachedRowSet select(String sql,String[] params) {
-		CachedRowSet crs=null;
+
+	// retrieve data with user input
+	public static CachedRowSet select(String sql, String[] params) {
+		CachedRowSet crs = null;
 		try {
 			crs = new CachedRowSetImpl();
 			Connection conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
-			for(int i=0;i<params.length;i++) {
-				ps.setString(i+1, params[i]);
+			for (int i = 0; i < params.length; i++) {
+				ps.setString(i + 1, params[i]);
 			}
 			ResultSet rs = ps.executeQuery();
 			crs.populate(rs);
@@ -77,10 +81,5 @@ public class DBUtil {
 		}
 		return crs;
 	}
-	
-	//init the database
-	public static void init() throws SQLException {
-		
-	}
-	
+
 }
