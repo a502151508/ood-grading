@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.sql.rowset.CachedRowSet;
 
@@ -41,7 +40,7 @@ public class DBUtil {
 		return isSucceed;
 	}
 
-	// retrieve data with no user input
+	// retrieve data with out user input
 	public static CachedRowSet select(String sql) throws SQLException {
 		CachedRowSet crs = null;
 		try {
