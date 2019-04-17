@@ -16,6 +16,14 @@ public class Task implements Serializable {
 
 	public Task() {
 	}
+	
+	public Task(int taskId, int classId, String taskName, double weight) {
+		super();
+		this.taskId = taskId;
+		this.classId = classId;
+		this.taskName = taskName;
+		this.weight = weight;
+	}
 
 	public int getTaskId() {
 		return this.taskId;

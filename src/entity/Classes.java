@@ -18,6 +18,13 @@ public class Classes implements Serializable {
 
 	public Classes() {
 	}
+	
+	public Classes(int classId, String className, String semester) {
+		super();
+		this.classId = classId;
+		this.className = className;
+		this.semester = semester;
+	}
 
 	public int getClassId() {
 		return this.classId;
@@ -43,4 +50,9 @@ public class Classes implements Serializable {
 		this.semester = semester;
 	}
 
+	@Override
+	public String toString() {
+		return "Classes [classId=" + classId + ", className=" + className + ", semester=" + semester + "]";
+	}
+	
 }

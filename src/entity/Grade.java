@@ -18,6 +18,13 @@ public class Grade implements Serializable {
 
 	public Grade() {
 	}
+	
+	public Grade(int gradeId, double score, int subTaskId) {
+		super();
+		this.gradeId = gradeId;
+		this.score = score;
+		this.subTaskId = subTaskId;
+	}
 
 	public int getGradeId() {
 		return this.gradeId;
