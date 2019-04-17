@@ -22,6 +22,15 @@ public class Student implements Serializable {
 
 	public Student() {
 	}
+	
+	public Student(int stuId, int classId, String firstName, String lastName, int stuType) {
+		super();
+		this.stuId = stuId;
+		this.classId = classId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.stuType = stuType;
+	}
 
 	public int getStuId() {
 		return this.stuId;

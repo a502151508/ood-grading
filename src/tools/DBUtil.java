@@ -61,14 +61,14 @@ public class DBUtil {
 	}
 
 	// retrieve data with user input
-	public static CachedRowSet select(String sql, String[] params) {
+	public static CachedRowSet select(String sql, Object[] params) {
 		CachedRowSet crs = null;
 		try {
 			crs = new CachedRowSetImpl();
 			Connection conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			for (int i = 0; i < params.length; i++) {
-				ps.setString(i + 1, params[i]);
+				ps.setString(i + 1, String.valueOf(params[i]));
 			}
 			ResultSet rs = ps.executeQuery();
 			crs.populate(rs);
@@ -79,6 +79,23 @@ public class DBUtil {
 			e.printStackTrace();
 		}
 		return crs;
+	}
+	public static boolean update(String sql,Object[] params) {
+		boolean isSucceed = false;
+		Connection conn = getConnection();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			for (int i = 0; i < params.length; i++) {
+				ps.setString(i + 1, String.valueOf(params[i]));
+			}
+			isSucceed = ps.execute();
+			System.out.println("update: " + sql);
+			ps.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isSucceed;
 	}
 
 }
