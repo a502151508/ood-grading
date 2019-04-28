@@ -17,19 +17,33 @@ public class Student implements Serializable {
 	private String firstName;
 
 	private String lastName;
-
+// 0 for undergrad, 1 for grad. 
 	private int stuType;
+	
+	private String buId;
+	
 
 	public Student() {
 	}
 	
-	public Student(int stuId, int classId, String firstName, String lastName, int stuType) {
+
+	public Student(int stuId, int classId, String firstName, String lastName, int stuType,String buId) {
 		super();
 		this.stuId = stuId;
 		this.classId = classId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.stuType = stuType;
+		this.buId=buId;
+	}
+
+	
+	public String getBuId() {
+		return buId;
+	}
+
+	public void setBuId(String buId) {
+		this.buId = buId;
 	}
 
 	public int getStuId() {
@@ -70,6 +84,13 @@ public class Student implements Serializable {
 
 	public void setStuType(int stuType) {
 		this.stuType = stuType;
+	}
+	
+
+	@Override
+	public String toString() {
+		return "Student [stuId=" + stuId + ", classId=" + classId + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", stuType=" + stuType + ", buId=" + buId + "]";
 	}
 
 }

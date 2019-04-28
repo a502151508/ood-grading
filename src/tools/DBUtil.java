@@ -55,9 +55,7 @@ public class DBUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return crs;
-
 	}
 
 	// retrieve data with user input
