@@ -29,5 +29,29 @@ public class TaskServiceImpl implements TaskService {
 		Object[] params = {st.getTaskId(),st.getSubTaskName(),st.getWeight()};
 		return td.insert(sql, params);
 	}
+	@Override
+	public boolean editTask(Task t) {
+		String sql = "UPDATE task SET task_name = ? , weight = ?  WHERE task_id = ?;";
+		Object[] params = { t.getTaskName(),t.getWeight(), t.getTaskId() };
+		return td.update(sql, params);
+	}
+	@Override
+	public boolean editSubTask(SubTask st) {
+		String sql = "UPDATE sub_task SET sub_task_name = ? , weight = ?  WHERE sub_task_id = ?;";
+		Object[] params = { st.getSubTaskName(),st.getWeight(),st.getSubTaskId() };
+		return td.update(sql, params);
+	}
+	@Override
+	public boolean deleteTask(Task t) {
+		String sql = "DELETE FROM task WHERE task_id = ?;";
+		Object[] params = {t.getTaskId()};
+		return td.delete(sql, params);
+	}
+	@Override
+	public boolean deleteSubTask(SubTask st) {
+		String sql = "DELETE FROM sub_task WHERE sub_task_id = ?;";
+		Object[] params = {st.getSubTaskId()};
+		return td.delete(sql, params);
+	}
 
 }

@@ -10,6 +10,7 @@ import entity.Student;
 import entity.dto.StudentGradingDto;
 import service.GradeService;
 import service.StudentService;
+import tools.DBUtil;
 
 public class GradeServiceImpl implements GradeService {
 	StudentService ss = new StudentServiceImpl();
@@ -27,6 +28,18 @@ public class GradeServiceImpl implements GradeService {
 	@Override
 	public List<Grade> getGrades(int stuId) {
 		return gd.getGradeOfStudent("select * from grade where stu_id = ?", stuId);
+	}
+	@Override
+	public boolean giveGrade(int stuId, int subTaskID,double score) {
+		String sql="INSERT INTO grade (sub_task_id, score, stu_id)  VALUES (?, ?, ?);";
+		Object[] params = {subTaskID,score,stuId};
+		return gd.insert(sql, params);
+	}
+	@Override
+	public boolean changeGrade(Grade g) {
+		String sql = "UPDATE grade SET score = ? WHERE grade_id = ?;";
+		Object[] params = { g.getScore(),g.getGradeId() };
+		return gd.update(sql, params);
 	}
 
 }

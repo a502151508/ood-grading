@@ -11,4 +11,8 @@ public interface TaskService {
 	public List<TaskDto> getTaskList(int classId);
 	public boolean addTask(Task t);
 	public boolean addSubTask(SubTask t);
+	public boolean editTask(Task t);
+	public boolean editSubTask(SubTask st);
+	public boolean deleteTask(Task t);
+	public boolean deleteSubTask(SubTask st);
 }

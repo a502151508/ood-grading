@@ -10,4 +10,6 @@ public interface GradeService {
 	public List<StudentGradingDto> getGradingList(int classId);
 	//grades of one student
 	public List<Grade> getGrades(int stuId);
+	public boolean giveGrade(int stuId,int subTaskID,double score);
+	public boolean changeGrade(Grade g);
 }

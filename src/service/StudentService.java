@@ -11,4 +11,5 @@ public interface StudentService {
 	public boolean editStudent(Student s);
 	public boolean deleteStudent(Student s);
 	public boolean addStudent(Student s);
+	public void LoadStudentFromCsv(String filepath,int classId);
 }

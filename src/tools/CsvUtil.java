@@ -40,7 +40,7 @@ public class CsvUtil {
 			e.printStackTrace();
 		}
 	}
-
+/*
 	public static void main(String[] args) {
 		/*
 		 * CSVReader reader = new CSVReader(new FileReader(
@@ -48,9 +48,9 @@ public class CsvUtil {
 		 * ); String[] nextLine; while ((nextLine = reader.readNext()) != null) { //
 		 * nextLine[] is an array of values from the line System.out.println(nextLine[0]
 		 * + "etc..."); }
-		 */
+		 
 		String csvFilePath = "/Users/zhang/Downloads/gc_19sprgcascs112_c1_fullgc_2019-04-23-16-14-59.csv";
 		LoadCsv(csvFilePath, 2);
 	}
-
+*/
 }

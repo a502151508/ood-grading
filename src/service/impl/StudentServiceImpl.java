@@ -6,6 +6,7 @@ import dao.StudentDao;
 import dao.impl.StudentDaoImpl;
 import entity.Student;
 import service.StudentService;
+import tools.CsvUtil;
 
 public class StudentServiceImpl implements StudentService {
 	private StudentDao sd = new StudentDaoImpl();
@@ -22,7 +23,7 @@ public class StudentServiceImpl implements StudentService {
 		return sd.getStudent("select * from student where stu_id = ?", params);
 	}
 
-	@Override
+	@Override 
 	public boolean editStudent(Student s) {
 		String sql = "UPDATE student SET last_name = ? , first_name = ? ,stu_type = ?, class_id = ? WHERE stu_id = ?;";
 		Object[] params = { s.getLastName(), s.getFirstName(), s.getStuType(), s.getClassId(), s.getStuId() };
@@ -32,14 +33,19 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public boolean deleteStudent(Student s) {
 		String sql = "DELETE FROM student WHERE stu_id = ?;";
-		Object[] params = {s.getStuId()};
+		Object[] params = { s.getStuId() };
 		return sd.delete(sql, params);
 	}
 
 	@Override
 	public boolean addStudent(Student s) {
-		String sql="INSERT INTO student (last_name, first_name, class_id, stu_type,bu_id)  VALUES (?, ?, ? ,?,?);";
-		Object[] params = {s.getLastName(),s.getFirstName(),s.getClassId(),s.getStuType(),s.getBuId()};
+		String sql = "INSERT INTO student (last_name, first_name, class_id, stu_type,bu_id)  VALUES (?, ?, ? ,?,?);";
+		Object[] params = { s.getLastName(), s.getFirstName(), s.getClassId(), s.getStuType(), s.getBuId() };
 		return sd.insert(sql, params);
+	}
+
+	@Override
+	public void LoadStudentFromCsv(String filepath, int classId) {
+		CsvUtil.LoadCsv(filepath, classId);
 	}
 }
