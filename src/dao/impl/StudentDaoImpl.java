@@ -20,7 +20,7 @@ public class StudentDaoImpl extends BaseDaoImpl implements StudentDao {
 		try {
 			CachedRowSet crs = DBUtil.select(sql, params);
 			while(crs.next()) {
-				data.add(new Student(Integer.parseInt(crs.getString(1)), Integer.parseInt(crs.getString(4)), crs.getString(3), crs.getString(2), Integer.parseInt(crs.getString(5))));
+				data.add(new Student(Integer.parseInt(crs.getString(1)), Integer.parseInt(crs.getString(4)), crs.getString(3), crs.getString(2), Integer.parseInt(crs.getString(5)) , crs.getString(6)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -34,7 +34,7 @@ public class StudentDaoImpl extends BaseDaoImpl implements StudentDao {
 		try {
 			CachedRowSet crs = DBUtil.select(sql, params);
 			while(crs.next()) {
-				s = new Student(Integer.parseInt(crs.getString(1)), Integer.parseInt(crs.getString(4)), crs.getString(3), crs.getString(2), Integer.parseInt(crs.getString(5)));
+				s = new Student(Integer.parseInt(crs.getString(1)), Integer.parseInt(crs.getString(4)), crs.getString(3), crs.getString(2), Integer.parseInt(crs.getString(5)) , crs.getString(6));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

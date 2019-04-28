@@ -38,8 +38,8 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public boolean addStudent(Student s) {
-		String sql="INSERT INTO student (last_name, first_name, class_id, stu_type)  VALUES (?, ?, ? ,?);";
-		Object[] params = {s.getLastName(),s.getFirstName(),s.getClassId(),s.getStuType()};
+		String sql="INSERT INTO student (last_name, first_name, class_id, stu_type,bu_id)  VALUES (?, ?, ? ,?,?);";
+		Object[] params = {s.getLastName(),s.getFirstName(),s.getClassId(),s.getStuType(),s.getBuId()};
 		return sd.insert(sql, params);
 	}
 }
