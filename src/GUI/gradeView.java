@@ -15,39 +15,41 @@ public class gradeView extends JFrame {
 
     }
     public gradeView(){
+    	this.setLayout(new BorderLayout());
+    	Container contentPane = this.getContentPane();
         JPanel buttonPanel = createButtonPanel();
-        this.add(buttonPanel);
+        contentPane.add(buttonPanel,BorderLayout.NORTH);
 
 
         JPanel tablePanel = createTablePanel();
-        this.add(tablePanel);
+        contentPane.add(tablePanel,BorderLayout.CENTER);
 
         this.setTitle("Grade");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBounds(100,100,450,200);
+        this.setBounds(100,100,543,367);
 
-        this.add(tablePanel);
+     
 
         this.setVisible(true);
     }
     protected  JPanel createButtonPanel(){
-        JPanel jp = new JPanel();
+        JPanel buttonPanel = new JPanel();
         JButton classCretriaButton = new JButton("Class Cretria");
-        jp.add(classCretriaButton);
-        return  jp;
+        buttonPanel.add(classCretriaButton);
+        return  buttonPanel;
     }
     private JPanel createTablePanel(){
 
-        JPanel jp= new JPanel();
-        jp.setBorder(new EmptyBorder(5,5,5,5));
-        jp.setLayout(new BorderLayout(0,0));
+        JPanel tablePanel= new JPanel();
+        tablePanel.setBorder(new EmptyBorder(5,5,5,5));
+        tablePanel.setLayout(new BorderLayout(0,0));
         JScrollPane scrollPane = new JScrollPane();
-        jp.add(scrollPane, BorderLayout.CENTER);
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
         gradeTable = new JTable();
         gradeTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         scrollPane.setViewportView(gradeTable);
         setTableContent();
-        return jp;
+        return tablePanel;
     }
     protected void setTableContent()
     {
