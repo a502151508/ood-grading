@@ -27,5 +27,4 @@ public class ClassesDaoImpl extends BaseDaoImpl implements ClassesDao {
 		return data;
 	}
 
-
 }

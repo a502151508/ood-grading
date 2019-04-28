@@ -57,4 +57,11 @@ public class Task implements Serializable {
 		this.weight = weight;
 	}
 
+	@Override
+	public String toString() {
+		return "Task [taskId=" + taskId + ", classId=" + classId + ", taskName=" + taskName + ", weight=" + weight
+				+ "]";
+	}
+	
+
 }

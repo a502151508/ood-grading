@@ -16,6 +16,14 @@ public class SubTask implements Serializable {
 
 	public SubTask() {
 	}
+	
+	public SubTask(int subTaskId, String subTaskName, int taskId, double weight) {
+		super();
+		this.subTaskId = subTaskId;
+		this.subTaskName = subTaskName;
+		this.taskId = taskId;
+		this.weight = weight;
+	}
 
 	public int getSubTaskId() {
 		return this.subTaskId;
@@ -48,4 +56,11 @@ public class SubTask implements Serializable {
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
+
+	@Override
+	public String toString() {
+		return "SubTask [subTaskId=" + subTaskId + ", subTaskName=" + subTaskName + ", taskId=" + taskId + ", weight="
+				+ weight + "]";
+	}
+	
 }

@@ -2,7 +2,6 @@ package entity;
 
 import java.io.Serializable;
 
-
 /**
  * The persistent class for the grade database table.
  * 
@@ -16,14 +15,17 @@ public class Grade implements Serializable {
 
 	private int subTaskId;
 
+	private int stuId;
+
 	public Grade() {
 	}
-	
-	public Grade(int gradeId, double score, int subTaskId) {
+
+	public Grade(int gradeId, double score, int subTaskId, int stuId) {
 		super();
 		this.gradeId = gradeId;
 		this.score = score;
 		this.subTaskId = subTaskId;
+		this.stuId = stuId;
 	}
 
 	public int getGradeId() {
@@ -49,5 +51,12 @@ public class Grade implements Serializable {
 	public void setSubTaskId(int subTaskId) {
 		this.subTaskId = subTaskId;
 	}
+
+	@Override
+	public String toString() {
+		return "Grade [gradeId=" + gradeId + ", score=" + score + ", subTaskId=" + subTaskId + ", stuId=" + stuId + "]";
+	}
+	
+	
 
 }
