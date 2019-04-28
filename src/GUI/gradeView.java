@@ -9,36 +9,47 @@ import java.awt.event.WindowEvent;
 
 public class gradeView extends JFrame {
     private JTable gradeTable;
-    private JPanel contentPane;
     public static void main(String[] args){
         gradeView frame = new gradeView();
-        frame.setVisible(true);
+     //   frame.setVisible(true);
 
     }
     public gradeView(){
-        addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowActivated(WindowEvent e)
-            {
-                do_this_windowActivated(e);
-            }
-        });
+        JPanel buttonPanel = createButtonPanel();
+        this.add(buttonPanel);
+
+
+        JPanel tablePanel = createTablePanel();
+        this.add(tablePanel);
+
         this.setTitle("Grade");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100,100,450,200);
-        contentPane=new JPanel();
-        contentPane.setBorder(new EmptyBorder(5,5,5,5));
-        contentPane.setLayout(new BorderLayout(0,0));
-        setContentPane(contentPane);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setBounds(100,100,450,200);
+
+        this.add(tablePanel);
+
+        this.setVisible(true);
+    }
+    protected  JPanel createButtonPanel(){
+        JPanel jp = new JPanel();
+        JButton classCretriaButton = new JButton("Class Cretria");
+        jp.add(classCretriaButton);
+        return  jp;
+    }
+    private JPanel createTablePanel(){
+
+        JPanel jp= new JPanel();
+        jp.setBorder(new EmptyBorder(5,5,5,5));
+        jp.setLayout(new BorderLayout(0,0));
         JScrollPane scrollPane = new JScrollPane();
-        contentPane.add(scrollPane, BorderLayout.CENTER);
+        jp.add(scrollPane, BorderLayout.CENTER);
         gradeTable = new JTable();
         gradeTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         scrollPane.setViewportView(gradeTable);
+        setTableContent();
+        return jp;
     }
-
-    protected void do_this_windowActivated(WindowEvent e)
+    protected void setTableContent()
     {
         DefaultTableModel tableModel=(DefaultTableModel) gradeTable.getModel();
         tableModel.setRowCount(0);
