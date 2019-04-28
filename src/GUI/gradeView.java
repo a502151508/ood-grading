@@ -46,7 +46,7 @@ public class gradeView extends JFrame {
     	rowDataList = new ArrayList<>();
     	this.setLayout(new BorderLayout());
     	Container contentPane = this.getContentPane();
-        JPanel buttonPanel = createButtonPanel();
+        JPanel buttonPanel = createButtonPanel("Class Criteria");
         contentPane.add(buttonPanel,BorderLayout.NORTH);
 
 
@@ -61,13 +61,13 @@ public class gradeView extends JFrame {
 
         this.setVisible(true);
     }
-    protected  JPanel createButtonPanel(){
+    protected static JPanel createButtonPanel(String buttonName){
         JPanel buttonPanel = new JPanel();
-        JButton classCretriaButton = new JButton("Class Cretria");
+        JButton classCretriaButton = new JButton(buttonName);
         buttonPanel.add(classCretriaButton);
         return  buttonPanel;
     }
-    private JPanel createTablePanel(){
+    private  JPanel createTablePanel(){
 
         JPanel tablePanel= new JPanel();
         tablePanel.setBorder(new EmptyBorder(5,5,5,5));
