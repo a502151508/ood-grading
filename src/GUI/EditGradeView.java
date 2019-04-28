@@ -3,6 +3,7 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -11,11 +12,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import entity.Grade;
 import entity.dto.StudentGradingDto;
+import service.GradeService;
+import service.impl.GradeServiceImpl;
 
 public class EditGradeView extends JFrame{
 	private JTable gradeTable;
@@ -23,6 +28,8 @@ public class EditGradeView extends JFrame{
 	private int modifiedSubtaskId;
 	private List<StudentGradingDto> rowDataList;
 	private List<Integer> subTaskIdList;
+	private HashMap<Integer,Integer> rowIndexGradeId = new HashMap<>() ;
+	private GradeService gs = new GradeServiceImpl();
 	public EditGradeView(String columnName, int modifiedSubtaskId, List<StudentGradingDto> rowDataList,List<Integer> subTaskIdList) {
 		this.gradeTable =  new JTable();
 		this.columnName = columnName;
@@ -64,22 +71,53 @@ public class EditGradeView extends JFrame{
             
         
         setTableContent();
+        gradeTable.getModel().addTableModelListener(new TableModelListener() {
+        	   @Override
+        	   public void tableChanged(TableModelEvent e) {
+        	       // access the values of the model and save them to the file here
+        		   int rowIndex = e.getFirstRow();
+        		   
+        		   //String buId = (String)gradeTable.getModel().getValueAt(rowIndex, 1);
+        		   int gradeId = rowIndexGradeId.get(rowIndex);
+        		   
+        		   Object objectGrade = gradeTable.getModel().getValueAt(rowIndex, 2);
+        		   Double newGrade = Double.valueOf(objectGrade.toString());
+        		   
+        		   updateGrade(gradeId,newGrade);
+        		   
+        		   System.out.println("Cell edit pos: " + e.getFirstRow());
+        		   System.out.println("Cell editing " + newGrade) ;
+        	   }
+        	});
+//        if(gradeTable.isEditing()) {
+//        	System.out.println("Entering stop editting");
+//        	gradeTable.getCellEditor().stopCellEditing();
+//        }
+        
         return tablePanel;
     }
+	private void updateGrade(int gradedId, double newGrade) {
+		
+	}
 	private void setTableContent() {
 		DefaultTableModel tableModel = new DefaultTableModel();
 		tableModel.addColumn("Name");
+		tableModel.addColumn("BU Id");
 		tableModel.addColumn(this.columnName);
-		
+		int i = 0;
         for(StudentGradingDto sgdto : this.rowDataList) {
         	List<String> data = new ArrayList<>();
     		String name = sgdto.getFirstName() + " " + sgdto.getLastName();
     		data.add(name);
     		
+    		String buId = sgdto.getBuId();
+    		data.add(buId);
+    		
     		List<Grade> gradeList = sgdto.getGrades();
     		for(Grade g : gradeList) {
     			int subTaskId = g.getSubTaskId();
     			if(modifiedSubtaskId == subTaskId) {
+    				rowIndexGradeId.put(i,g.getGradeId());
     				data.add(Double.toString(g.getScore()));
     			}
     			
@@ -87,7 +125,9 @@ public class EditGradeView extends JFrame{
     	//	this.rowDataList.add(data);
     		String[] dataString = data.toArray(new String[0]);
     		tableModel.addRow(dataString);
+    		i++;
         }
+        
         gradeTable.setModel(tableModel);
 	}
 
