@@ -75,6 +75,7 @@ public class gradeView extends JFrame {
         JScrollPane scrollPane = new JScrollPane();
         tablePanel.add(scrollPane, BorderLayout.CENTER);
         gradeTable = new JTable();
+      
         gradeTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         scrollPane.setViewportView(gradeTable);
        
