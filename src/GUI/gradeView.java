@@ -3,9 +3,15 @@ package GUI;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class gradeView extends JFrame {
     private JTable gradeTable;
@@ -48,15 +54,25 @@ public class gradeView extends JFrame {
         gradeTable = new JTable();
         gradeTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         scrollPane.setViewportView(gradeTable);
+       
+        JTableHeader header = gradeTable.getTableHeader();
+        header.addMouseListener(new TableHeaderMouseListener(gradeTable));
+        
+        
+        
         setTableContent();
         return tablePanel;
     }
     protected void setTableContent()
     {
-        DefaultTableModel tableModel=(DefaultTableModel) gradeTable.getModel();
-        tableModel.setRowCount(0);
-        tableModel.setColumnIdentifiers(new Object[]{"Name","HW1","HW2","midterm1"});
-        tableModel.addRow(new Object[]{"YIFEI","100","90","80"});
+    	DefaultTableModel tableModel = new DefaultTableModel();
+    	ArrayList<String> column = new ArrayList<String>(Arrays.asList("Name","hw1","hw2","midterm1"));
+    	for(String c : column) {
+    		tableModel.addColumn(c);
+    	}
+    //	ArrayList<String> row = new ArrayList<String>(Arrays.asList("YIFEI","100","90","80"));
+    	
+    	 tableModel.addRow(new Object[]{"YIFEI","100","90","80"});
         gradeTable.setRowHeight(30);
         gradeTable.setModel(tableModel);
     }
