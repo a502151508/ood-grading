@@ -27,13 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class gradeView extends JFrame {
-    private JTable gradeTable;
-    private TaskService ts = new TaskServiceImpl();
-    private GradeService gs = new GradeServiceImpl();
+    private static JTable gradeTable;
+    private static TaskService ts = new TaskServiceImpl();
+    private static GradeService gs = new GradeServiceImpl();
     private List<String> columns ;
-    private List<Integer> subTaskIdList;
-    private List<StudentGradingDto> rowDataList;
-    private HashMap<Integer,Integer> subTaskPositionMap = new HashMap<>();
+    private static List<Integer> subTaskIdList;
+    private static List<StudentGradingDto> rowDataList;
+    private static HashMap<Integer,Integer> subTaskPositionMap = new HashMap<>();
     public static void main(String[] args){
         gradeView frame = new gradeView();
      //   frame.setVisible(true);
@@ -87,7 +87,7 @@ public class gradeView extends JFrame {
         setTableContent();
         return tablePanel;
     }
-    protected void setTableContent()
+    protected static void setTableContent()
     {
     	DefaultTableModel tableModel = new DefaultTableModel();
     	//ArrayList<String> column = new ArrayList<String>(Arrays.asList("Name","hw1","hw2","midterm1"));
@@ -115,7 +115,7 @@ public class gradeView extends JFrame {
     	//set data
     	List<StudentGradingDto> studentGradingList = gs.getGradingList(2);
     	for(StudentGradingDto sgdto : studentGradingList) {
-    		this.rowDataList.add(sgdto);
+    		rowDataList.add(sgdto);
     		List<String> data = new ArrayList<>();
     		String name = sgdto.getFirstName() + " " + sgdto.getLastName();
     		data.add(name);
