@@ -1,21 +1,17 @@
 package GUI;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 
 public class EditCategory extends JFrame {
 
-	JTree jt;
 	JPanel contentPane;
 	JTextField txtPercentage;
 	JTextField txtName;
@@ -41,7 +37,7 @@ public class EditCategory extends JFrame {
 	 * Create the frame.
 	 */
 	public EditCategory() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 411, 79);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

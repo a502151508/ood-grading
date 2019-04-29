@@ -18,20 +18,21 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;  
 import javax.swing.tree.TreePath;
   
-public class EditGradingCriteria extends JFrame {  
-    //JFrame jf;  
+public class EditGradingCriteria extends JFrame {
+	public EditGradingCriteria() {
+	}   
   
     JTree tree;  
     DefaultTreeModel model;  
   
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");  
-    DefaultMutableTreeNode assignment = new DefaultMutableTreeNode("Assignments");  
-    DefaultMutableTreeNode exam = new DefaultMutableTreeNode("Exams");  
+    DefaultMutableTreeNode assignment = new DefaultMutableTreeNode("Assignments/50%");  
+    DefaultMutableTreeNode exam = new DefaultMutableTreeNode("Exams/50%");  
     
     TreePath movePath;  
   
     JButton addParentButton = new JButton("Add Category");
-    JButton addSiblingButton = new JButton("Add Sub-Category"); 
+    JButton addChildButton = new JButton("Add Sub-Category"); 
     JButton deleteButton = new JButton("Delete");  
     JButton editButton = new JButton("Edit");  
     
@@ -96,7 +97,7 @@ public class EditGradingCriteria extends JFrame {
         		    	String name = cateInfo.getTaskName();
                 		String percent = cateInfo.getTaskPercent();
                 		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(  
-                                name + " " + percent + "%"); 
+                                name + "/" + percent + "%"); 
                 		parent.add(newNode); 
                 		TreeNode[] nodes = model.getPathToRoot(newNode);  
                         TreePath path = new TreePath(nodes);  
@@ -108,20 +109,30 @@ public class EditGradingCriteria extends JFrame {
         });
         panel.add(addParentButton);
         
-        addSiblingButton.addActionListener(new ActionListener() {  
+        addChildButton.addActionListener(new ActionListener() {  
             public void actionPerformed(ActionEvent event) {                  
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree  
                         .getLastSelectedPathComponent();  
-                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(  
-                        "New Sub-Category");  
-                selectedNode.add(newNode);  
-                TreeNode[] nodes = model.getPathToRoot(newNode);  
-                TreePath path = new TreePath(nodes);  
-                tree.scrollPathToVisible(path);  
-                tree.updateUI();  
+                EditCategory cateInfo = new EditCategory();
+                cateInfo.setVisible(true);;
+                
+                JButton save = cateInfo.btnSave;
+                save.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent e) {
+                		String name = cateInfo.getTaskName();
+                		String percent = cateInfo.getTaskPercent();
+                		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(
+                				name + "/" + percent + "%");
+                		selectedNode.add(newNode);
+                		TreeNode[] nodes = model.getPathToRoot(newNode);  
+                		TreePath path = new TreePath(nodes);  
+                		tree.scrollPathToVisible(path);  
+                    	tree.updateUI();  
+                	}
+                });
             }  
         });  
-        panel.add(addSiblingButton);  
+        panel.add(addChildButton);  
   
         deleteButton.addActionListener(new ActionListener() {  
             public void actionPerformed(ActionEvent event) {  
@@ -135,12 +146,27 @@ public class EditGradingCriteria extends JFrame {
         panel.add(deleteButton);  
   
         editButton.addActionListener(new ActionListener() {  
-            public void actionPerformed(ActionEvent event) {  
-                TreePath selectedPath = tree.getSelectionPath();  
-                if (selectedPath != null) {  
-                    EditCategory edit = new EditCategory();
-                    edit.setVisible(true);
-                }  
+            public void actionPerformed(ActionEvent event) {                  
+				
+                EditCategory cateInfo = new EditCategory();
+                cateInfo.setVisible(true);;
+                
+                JButton save = cateInfo.btnSave;
+                save.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent e) {
+                		String name = cateInfo.getTaskName();
+                		String percent = cateInfo.getTaskPercent();
+                		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(
+                				name + "/" + percent + "%");
+                		DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree  
+                                .getLastSelectedPathComponent();  
+                		selectedNode.setUserObject(newNode);
+                		TreeNode[] nodes = model.getPathToRoot(newNode);  
+                		TreePath path = new TreePath(nodes);  
+                		tree.scrollPathToVisible(path);  
+                    	tree.updateUI();  
+                	}
+                });
             }  
         });  
         panel.add(editButton);  

@@ -4,3 +4,4 @@
 .project
 /bin
 lib/rt.jar
+.settings/org.eclipse.jdt.core.prefs
