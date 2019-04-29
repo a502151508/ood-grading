@@ -201,7 +201,7 @@ public class EditGradingCriteria extends JFrame {
         });
         panel.add(saveButton);
   
-        JScrollPane scrollPane = new JScrollPane(tree);
+        JScrollPane scrollPane = new LoadJTreePanel(2);
         this.getContentPane().add(scrollPane);
        
         
