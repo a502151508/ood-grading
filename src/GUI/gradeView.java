@@ -5,7 +5,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import com.sun.prism.paint.Gradient;
 
 import entity.Grade;
 import entity.SubTask;
