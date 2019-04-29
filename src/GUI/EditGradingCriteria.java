@@ -17,6 +17,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;  
 import javax.swing.tree.TreeNode;  
 import javax.swing.tree.TreePath;
+
+import entity.Task;
+import service.TaskService;
+import service.impl.TaskServiceImpl;
   
 public class EditGradingCriteria extends JFrame {
 	public EditGradingCriteria() {
@@ -25,6 +29,8 @@ public class EditGradingCriteria extends JFrame {
     JTree tree;  
     DefaultTreeModel model;  
   
+    TaskService ts = new TaskServiceImpl();
+    
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");  
     DefaultMutableTreeNode assignment = new DefaultMutableTreeNode("Assignments/50%");  
     DefaultMutableTreeNode exam = new DefaultMutableTreeNode("Exams/50%");  
@@ -35,7 +41,7 @@ public class EditGradingCriteria extends JFrame {
     JButton addChildButton = new JButton("Add Sub-Category"); 
     JButton deleteButton = new JButton("Delete");  
     JButton editButton = new JButton("Edit");  
-    
+    JButton saveButton = new JButton("Save");
   
     public void init() {
     	
@@ -170,6 +176,30 @@ public class EditGradingCriteria extends JFrame {
             }  
         });  
         panel.add(editButton);  
+        
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                int numOfTask = root.getChildCount();
+                for(int i = 0; i < numOfTask; i++) {
+                    TreeNode taskNode = root.getChildAt(i);
+                    String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
+                    String [] arrayOfTask = taskString.split("/");
+                    String taskName = arrayOfTask[0];
+                    String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
+                    Task task = new Task(0,2,taskName,Double.valueOf(taskPerce));
+                    ts.addTask(task);
+//                     int numOfSubTask = taskNode.getChildCount();
+//                     for(int j = 0; j < numOfSubTask; j++) {
+//                         TreeNode subTaskNode = taskNode.getChildAt(j);
+//                         String subTask = (String) ((DefaultMutableTreeNode) subTaskNode).getUserObject();
+//                         String [] arryOfSubTask = subTask.split("/");
+//                         String subTaskName = arryOfSubTask[0];
+//                         String subTask
+//                     }
+                }
+            }
+        });
+        panel.add(saveButton);
   
         JScrollPane scrollPane = new JScrollPane(tree);
         this.getContentPane().add(scrollPane);
