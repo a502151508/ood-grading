@@ -94,5 +94,9 @@ public class LoadJTreePanel extends JScrollPane {
         tree.addMouseListener(ml); 
         this.add(tree);
 	}
+	
+	public JTree getTree() {
+		return (this.tree);
+	}
 
 }
