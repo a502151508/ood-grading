@@ -50,10 +50,17 @@ public class EditGradingCriteria extends JFrame {
   
     public void init() {
     	
+    	
+        JPanel treePanel = new LoadJTreePanel(2);
+       // JTree tree = ((LoadJTreePanel) scrollPane).getTree();
+        this.tree = ((LoadJTreePanel) treePanel).getTree();
+       // JScrollPane treePane = new JScrollPane(tree);
+        this.getContentPane().add(treePanel,BorderLayout.NORTH);
+    	
     	root.add(assignment);
     	root.add(exam);
         this.setTitle("Grading Criteria");  
-        tree = new JTree(root);
+      //  tree = new JTree(root);
         tree.setRootVisible(false);
         model = (DefaultTreeModel) tree.getModel();
         DefaultTreeModel dtm = (DefaultTreeModel) tree.getModel();
@@ -225,10 +232,7 @@ public class EditGradingCriteria extends JFrame {
         });
         panel.add(saveButton);
   
-        JScrollPane scrollPane = new LoadJTreePanel(2);
-        JTree tree = ((LoadJTreePanel) scrollPane).getTree();
-        JScrollPane treePane = new JScrollPane(tree);
-        this.getContentPane().add(treePane);
+
        
         
 

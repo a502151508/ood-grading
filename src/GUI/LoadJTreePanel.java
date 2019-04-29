@@ -22,7 +22,7 @@ import entity.dto.TaskDto;
 import service.TaskService;
 import service.impl.TaskServiceImpl;
 
-public class LoadJTreePanel extends JScrollPane {
+public class LoadJTreePanel extends JPanel {
 	
 	int classId;
 	JTree tree;  
@@ -92,7 +92,8 @@ public class LoadJTreePanel extends JScrollPane {
             }  
         };  
         tree.addMouseListener(ml); 
-        this.add(tree);
+        JScrollPane treePane = new JScrollPane(tree);
+        this.add(treePane);
 	}
 	
 	public JTree getTree() {
