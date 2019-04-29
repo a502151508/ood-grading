@@ -5,8 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;  
 import java.awt.event.MouseAdapter;  
 import java.awt.event.MouseEvent;  
-import java.awt.event.MouseListener;  
-  
+import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.List;
+
 import javax.swing.JButton;  
 import javax.swing.JFrame;  
 import javax.swing.JOptionPane;  
@@ -18,7 +20,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;  
 import javax.swing.tree.TreePath;
 
+import entity.SubTask;
 import entity.Task;
+import entity.dto.TaskDto;
 import service.TaskService;
 import service.impl.TaskServiceImpl;
   
@@ -30,6 +34,7 @@ public class EditGradingCriteria extends JFrame {
     DefaultTreeModel model;  
   
     TaskService ts = new TaskServiceImpl();
+    HashMap<String, Integer> taskNameIdMap = new HashMap<>();
     
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");  
     DefaultMutableTreeNode assignment = new DefaultMutableTreeNode("Assignments/50%");  
@@ -179,6 +184,7 @@ public class EditGradingCriteria extends JFrame {
         
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
+            	//add task to db
                 int numOfTask = root.getChildCount();
                 for(int i = 0; i < numOfTask; i++) {
                     TreeNode taskNode = root.getChildAt(i);
@@ -188,15 +194,33 @@ public class EditGradingCriteria extends JFrame {
                     String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
                     Task task = new Task(0,2,taskName,Double.valueOf(taskPerce));
                     ts.addTask(task);
-//                     int numOfSubTask = taskNode.getChildCount();
-//                     for(int j = 0; j < numOfSubTask; j++) {
-//                         TreeNode subTaskNode = taskNode.getChildAt(j);
-//                         String subTask = (String) ((DefaultMutableTreeNode) subTaskNode).getUserObject();
-//                         String [] arryOfSubTask = subTask.split("/");
-//                         String subTaskName = arryOfSubTask[0];
-//                         String subTask
-//                     }
                 }
+                //get task id from db
+                List<TaskDto> taskDtoList = ts.getTaskList(2);
+                for(TaskDto tdto : taskDtoList) {
+                	String taskName = tdto.getTaskName();
+                	int taskId = tdto.getTaskId();
+                	taskNameIdMap.put(taskName, taskId);
+                }
+                //add subtasks to db
+                for(int i = 0; i < numOfTask; i++) {
+                	TreeNode taskNode = root.getChildAt(i);
+                    String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
+                    String [] arrayOfTask = taskString.split("/");
+                    String taskName = arrayOfTask[0];
+                    int taskId = taskNameIdMap.get(taskName);
+                    int numOfSubTask = taskNode.getChildCount();
+                    for(int j = 0; j < numOfSubTask; j++) {
+                    	TreeNode subTaskNode = taskNode.getChildAt(j);
+                    	String subTaskString = (String) ((DefaultMutableTreeNode) subTaskNode).getUserObject();
+                    	String [] arryOfSubTask = subTaskString.split("/");
+                     	String subTaskName = arryOfSubTask[0];
+                     	String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
+                     	SubTask subTask = new SubTask(0,subTaskName,taskId,Double.valueOf(subTaskPerce));
+                     	ts.addSubTask(subTask);
+                    }
+                }
+                
             }
         });
         panel.add(saveButton);
