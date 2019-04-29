@@ -18,8 +18,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;  
 import javax.swing.tree.TreePath;
   
-public class EditGradingCriteria {  
-    JFrame jf;  
+public class EditGradingCriteria extends JFrame {  
+    //JFrame jf;  
   
     JTree tree;  
     DefaultTreeModel model;  
@@ -40,7 +40,7 @@ public class EditGradingCriteria {
     	
     	root.add(assignment);
     	root.add(exam);
-        jf = new JFrame("Grading Criteria");  
+        this.setTitle("Grading Criteria");  
         tree = new JTree(root);
         tree.setRootVisible(false);
         model = (DefaultTreeModel) tree.getModel();
@@ -61,7 +61,7 @@ public class EditGradingCriteria {
   
                 if (tp != null && movePath != null) {    
                     if (movePath.isDescendant(tp) && movePath != tp) {  
-                        JOptionPane.showMessageDialog(jf,  
+                        JOptionPane.showMessageDialog(null,  
                                 "Cannot Move", "Illegal Transaction",  
                                 JOptionPane.ERROR_MESSAGE);  
                         return;  
@@ -146,14 +146,14 @@ public class EditGradingCriteria {
         panel.add(editButton);  
   
         JScrollPane scrollPane = new JScrollPane(tree);
-        jf.getContentPane().add(scrollPane);
+        this.getContentPane().add(scrollPane);
        
         
 
-        jf.getContentPane().add(panel, BorderLayout.SOUTH);  
-        jf.pack();  
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
-        jf.setVisible(true);  
+        this.getContentPane().add(panel, BorderLayout.SOUTH);  
+        this.pack();  
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
+        this.setVisible(true);  
     }  
   
     public static void main(String[] args) {  
