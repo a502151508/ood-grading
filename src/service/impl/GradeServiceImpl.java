@@ -20,7 +20,11 @@ public class GradeServiceImpl implements GradeService {
 		List<Student> sl = ss.getStudentList(classId);
 		 List<StudentGradingDto> sgl = new ArrayList<StudentGradingDto>();
 		for (Student s : sl) {
-			StudentGradingDto sgDto = new StudentGradingDto(s, gd.getGradeOfStudent("select * from grade where stu_id = ?", s.getStuId()));
+			List<Grade> gL = getGrades(s.getStuId());
+			for(Grade  g: gL) {
+				giveGrade(g.getStuId(), g.getSubTaskId(), 0);
+			}
+			StudentGradingDto sgDto = new StudentGradingDto(s, getGrades( s.getStuId()));
 			sgl.add(sgDto);
 		}
 		return sgl;

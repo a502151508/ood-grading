@@ -52,6 +52,15 @@ public class Grade implements Serializable {
 		this.subTaskId = subTaskId;
 	}
 
+	
+	public int getStuId() {
+		return stuId;
+	}
+
+	public void setStuId(int stuId) {
+		this.stuId = stuId;
+	}
+
 	@Override
 	public String toString() {
 		return "Grade [gradeId=" + gradeId + ", score=" + score + ", subTaskId=" + subTaskId + ", stuId=" + stuId + "]";
