@@ -30,8 +30,9 @@ public class EditGradeView extends JFrame{
 	private List<Integer> subTaskIdList;
 	private HashMap<Integer,Integer> rowIndexGradeId = new HashMap<>() ;
 	private GradeService gs = new GradeServiceImpl();
-	public EditGradeView(String columnName, int modifiedSubtaskId, List<StudentGradingDto> rowDataList,List<Integer> subTaskIdList) {
+	public EditGradeView( String columnName, int modifiedSubtaskId, List<StudentGradingDto> rowDataList,List<Integer> subTaskIdList) {
 		this.gradeTable =  new JTable();
+	//	this.orginalTable = originalGradeTable;
 		this.columnName = columnName;
 		this.modifiedSubtaskId = modifiedSubtaskId;
 		this.rowDataList = rowDataList;
@@ -96,8 +97,9 @@ public class EditGradeView extends JFrame{
         
         return tablePanel;
     }
-	private void updateGrade(int gradedId, double newGrade) {
-		
+	private void updateGrade(int gradeId, double newGrade) {
+		gs.changeGrade(new Grade(gradeId, newGrade, 0, 0));
+		gradeView.setTableContent();
 	}
 	private void setTableContent() {
 		DefaultTableModel tableModel = new DefaultTableModel();
