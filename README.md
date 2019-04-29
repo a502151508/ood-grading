@@ -4,9 +4,9 @@ CS 591 Object Oriented Design and Development in Java @ Boston University
 
 ## Group Members
 
-Emmanuel Amponsah
+[Emmanuel Amponsah](https://github.com/emampons)
 
-Yifei Feng
+[Yifei Feng](https://github.com/yifeifeng)
 
 [Xiaotong Niu](https://github.com/sylvia0801)
 
