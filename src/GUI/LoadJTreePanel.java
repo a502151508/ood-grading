@@ -29,8 +29,6 @@ public class LoadJTreePanel extends JPanel {
     DefaultTreeModel model;  
     TaskService ts = new TaskServiceImpl();
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");  
-//    DefaultMutableTreeNode assignment = new DefaultMutableTreeNode("Assignments");  
-//    DefaultMutableTreeNode exam = new DefaultMutableTreeNode("Exams");  
     TreePath movePath;  
 
 	/**
@@ -42,8 +40,6 @@ public class LoadJTreePanel extends JPanel {
 	 */
 	public LoadJTreePanel(int classId) {
 		this.classId=classId;
-		this.setBorder(new EmptyBorder(5, 5, 5, 5));
-		this.setLayout(new BorderLayout(0, 0));
 		init();
 	}
 	public void init() {
@@ -94,8 +90,12 @@ public class LoadJTreePanel extends JPanel {
             }  
         };  
         tree.addMouseListener(ml); 
-        JScrollPane scrollPane = new JScrollPane(tree);
-        this.add(scrollPane);
+        JScrollPane treePane = new JScrollPane(tree);
+        this.add(treePane);
+	}
+	
+	public JTree getTree() {
+		return (this.tree);
 	}
 
 }
