@@ -29,8 +29,6 @@ public class LoadJTreePanel extends JPanel {
     DefaultTreeModel model;  
     TaskService ts = new TaskServiceImpl();
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");  
-//    DefaultMutableTreeNode assignment = new DefaultMutableTreeNode("Assignments");  
-//    DefaultMutableTreeNode exam = new DefaultMutableTreeNode("Exams");  
     TreePath movePath;  
 
 	/**

@@ -52,15 +52,10 @@ public class EditGradingCriteria extends JFrame {
     	
     	
         JPanel treePanel = new LoadJTreePanel(2);
-       // JTree tree = ((LoadJTreePanel) scrollPane).getTree();
         this.tree = ((LoadJTreePanel) treePanel).getTree();
-       // JScrollPane treePane = new JScrollPane(tree);
         this.getContentPane().add(treePanel,BorderLayout.NORTH);
     	
-    	root.add(assignment);
-    	root.add(exam);
         this.setTitle("Grading Criteria");  
-      //  tree = new JTree(root);
         tree.setRootVisible(false);
         model = (DefaultTreeModel) tree.getModel();
         DefaultTreeModel dtm = (DefaultTreeModel) tree.getModel();
@@ -192,6 +187,7 @@ public class EditGradingCriteria extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
             	//add task to db
+            	root = (DefaultMutableTreeNode)tree.getModel().getRoot();
                 int numOfTask = root.getChildCount();
                 for(int i = 0; i < numOfTask; i++) {
                     TreeNode taskNode = root.getChildAt(i);
@@ -200,6 +196,7 @@ public class EditGradingCriteria extends JFrame {
                     String taskName = arrayOfTask[0];
                     String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
                     Task task = new Task(0,2,taskName,Double.valueOf(taskPerce));
+                    System.out.println(task.toString());
                     ts.addTask(task);
                 }
                 //get task id from db
