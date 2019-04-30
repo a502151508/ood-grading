@@ -33,16 +33,18 @@ public class gradeView extends JFrame {
     private static List<Integer> subTaskIdList;
     private static List<StudentGradingDto> rowDataList;
     private static HashMap<Integer,Integer> subTaskPositionMap = new HashMap<>();
-    public static void main(String[] args){
-        gradeView frame = new gradeView();
-     //   frame.setVisible(true);
-
-    }
-    public gradeView(){
+    private static int classId;
+//    public static void main(String[] args){
+//        gradeView frame = new gradeView();
+//     //   frame.setVisible(true);
+//
+//    }
+    public gradeView(int classId){
     	columns  = new ArrayList<>();
     	subTaskIdList = new ArrayList<>();
     	subTaskIdList.add(0, -1);
     	rowDataList = new ArrayList<>();
+    	this.classId = classId;
     	this.setLayout(new BorderLayout());
     	Container contentPane = this.getContentPane();
         JPanel buttonPanel = createButtonPanel("Class Criteria");
@@ -91,7 +93,7 @@ public class gradeView extends JFrame {
     	DefaultTableModel tableModel = new DefaultTableModel();
     	//ArrayList<String> column = new ArrayList<String>(Arrays.asList("Name","hw1","hw2","midterm1"));
     	//set column
-    	List<TaskDto> l =ts.getTaskList(2);
+    	List<TaskDto> l =ts.getTaskList(classId);
     	
     	tableModel.addColumn("Name");
     	
@@ -112,7 +114,7 @@ public class gradeView extends JFrame {
     	}
     	
     	//set data
-    	List<StudentGradingDto> studentGradingList = gs.getGradingList(2);
+    	List<StudentGradingDto> studentGradingList = gs.getGradingList(classId);
     	for(StudentGradingDto sgdto : studentGradingList) {
     		rowDataList.add(sgdto);
     		List<String> data = new ArrayList<>();
