@@ -1,83 +1,90 @@
 package GUI;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
+
+import service.ClassesService;
+import service.impl.ClassesServiceImpl;
+import entity.Classes;
 
 public class ClassPanel extends JFrame {
 
     JScrollPane scrollPane;
     JTable classTable;
+    JFrame classCreationPopup;
+    JTextField classNameTxt;
+    JTextField classSemesterTxt;
 
+    String className = "";
+    String semester = "";
     public ClassPanel() {
         initComponents();
         populateTable();
 
     }
 
-    public class Class {
-        public int id;
-        public String sem;
-        public String className;
-
-        public Class(int Id, String sem, String className) {
-            this.id = Id;
-            this.sem = sem;
-            this.className = className;
-
-        }
-    }
-
-    public ArrayList ListClass(int classID) {
-        ArrayList<Class> list = new ArrayList<>();
-        list.add(new Class(1, "Fall 2019", "CS591"));
-        list.add(new Class(3, "Spring 2018", "CS320"));
-        list.add(new Class(4, "Fall 2018", "CS112"));
-        list.add(new Class(5, "Spring 2019", "CS111"));
+    public List<Classes> ListClass() {
+        ClassesService classesService = new ClassesServiceImpl();
+        List<Classes> list = classesService.getClassesList();
 
         return list;
     }
 
     public void populateTable() {
         DefaultTableModel model = (DefaultTableModel) classTable.getModel();
-        ArrayList<Class> list = ListClass(0);
+        List<Classes> list = ListClass();
         Object rowData[] = new Object[3];
         for (int i = 0; i < list.size(); i++) {
-            rowData[0] = list.get(i).id;
-            rowData[1] = list.get(i).sem;
-            rowData[2] = list.get(i).className;
+            rowData[0] = list.get(i).getClassId();
+            rowData[1] = list.get(i).getSemester();
+            rowData[2] = list.get(i).getClassName();
             model.addRow(rowData);
         }
 
     }
 
     private void initComponents() {
-
         scrollPane = new JScrollPane();
         classTable = new JTable();
+        JPanel buttonsPanel = new JPanel();
+        JPanel scrollView = new JPanel();
 
         JButton removeClassButton = new JButton("Remove Class");
-        removeClassButton.setSize(40, 40);
         removeClassButton.addActionListener(new RemoveClassListener());
 
-        JButton addClassbutton = new JButton("Add Class");
-        addClassbutton.setSize(40, 40);
-        addClassbutton.addActionListener(new AddClassListener());
 
-        JButton classSettingsbutton = new JButton("Class Settings");
-        classSettingsbutton.setSize(40, 40);
-        classSettingsbutton.addActionListener(new ClassSettingsListener());
+        JButton addClassButton = new JButton("Add Class");
+        addClassButton.addActionListener(new AddClassListener());
+
+        JButton classSettingsButton = new JButton("Class Settings");
+        classSettingsButton.addActionListener(new ClassSettingsListener());
+
+        JButton switchGradeButton = new JButton("Grade View");
+        switchGradeButton.addActionListener(new GradeViewActionListener());
+
+        JButton switchStudentButton = new JButton("Student View");
+        switchStudentButton.addActionListener(new StudentViewActionListener());
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        buttonsPanel.add(removeClassButton);
+        buttonsPanel.add(addClassButton);
+        buttonsPanel.add(classSettingsButton);
+        buttonsPanel.add(switchGradeButton);
+        buttonsPanel.add(switchStudentButton);
+        buttonsPanel.setVisible(true);
+
 
         classTable.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Id", "Semester", "Class Name" }));
-
         scrollPane.setViewportView(classTable);
 
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        getContentPane().setLayout(new BorderLayout());
+
+        GroupLayout layout = new GroupLayout(scrollView);
+        scrollView.setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(layout
                         .createSequentialGroup().addGap(32, 32, 32).addComponent(scrollPane, GroupLayout.PREFERRED_SIZE,
@@ -90,14 +97,16 @@ public class ClassPanel extends JFrame {
                                 GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(14, Short.MAX_VALUE)));
 
-        //scrollPane.add(removeClassButton);
-        scrollPane.add(addClassbutton);
+
+        add(scrollView, BorderLayout.NORTH);
+        add(buttonsPanel, BorderLayout.SOUTH);
+
         pack();
     }
 
     public static void main(String args[]) {
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ClassPanel().setVisible(true);
             }
@@ -109,15 +118,64 @@ public class ClassPanel extends JFrame {
             int row = classTable.getSelectedRow();
             int modelRow = classTable.convertRowIndexToModel(row);
             DefaultTableModel model = (DefaultTableModel)classTable.getModel();
-            model.removeRow(modelRow);                  
+
+            int id =Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+            String sem = model.getValueAt(modelRow, 1).toString();
+            String className = model.getValueAt(modelRow, 2).toString();
+
+            Classes rem = new Classes(id, className, sem);
+
+            ClassesService cs = new ClassesServiceImpl();
+            cs.deleteClass(rem);
+
+            model.removeRow(modelRow);
+
         }
     }
 
     public class AddClassListener implements  ActionListener {
         public void actionPerformed(ActionEvent event){
-            DefaultTableModel model = (DefaultTableModel)classTable.getModel();
-            model.addRow(new Object[]{"1", "Fall 2020", "CS432"}); 
-            //TODO: add popup window for collecting class information                
+
+            classCreationPopup = new JFrame();
+            JPanel classCreation = new JPanel();
+
+            classNameTxt = new JTextField("Enter Class Name");
+            classSemesterTxt = new JTextField("Enter Semester");
+
+            JButton createClassButton = new JButton("Create Class");
+            createClassButton.addActionListener(new CreateClassActionListener());
+
+            classCreation.add(classNameTxt);
+            classCreation.add(classSemesterTxt);
+            classCreation.add(createClassButton);
+            classCreation.setVisible(true);
+
+            classCreationPopup.add(classCreation);
+            classCreationPopup.setVisible(true);
+            classCreationPopup.pack();
+
+
+
+        }
+
+        private class CreateClassActionListener implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                className = classNameTxt.getText();
+                semester = classSemesterTxt.getText();
+                classNameTxt.setText("Enter Class Name");
+                classSemesterTxt.setText("Enter Semester");
+                DefaultTableModel model = (DefaultTableModel)classTable.getModel();
+                if(!className.isEmpty() && !semester.isEmpty()){
+                    Classes add = new Classes(0, className, semester);
+
+                    model.addRow(new Object[]{"0", semester, className});
+
+                    ClassesService classesService = new ClassesServiceImpl();
+                    //classesService.addClass(add);
+                }
+                classCreationPopup.setVisible(false);
+            }
         }
     }
 
@@ -125,8 +183,35 @@ public class ClassPanel extends JFrame {
         public void actionPerformed(ActionEvent event){
             int row = classTable.getSelectedRow();
             int modelRow = classTable.convertRowIndexToModel(row);
-            //TODO: call other UI code                 
+            //TODO: call other UI code
         }
     }
 
+    private class StudentViewActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int row = classTable.getSelectedRow();
+            int modelRow = classTable.convertRowIndexToModel(row);
+            DefaultTableModel model = (DefaultTableModel)classTable.getModel();
+
+            int id =Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+
+            setVisible(false);
+            new StudentPanel(id).setVisible(true);
+        }
+    }
+
+    private class GradeViewActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int row = classTable.getSelectedRow();
+            int modelRow = classTable.convertRowIndexToModel(row);
+            DefaultTableModel model = (DefaultTableModel)classTable.getModel();
+
+            int id =Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+
+            setVisible(false);
+            new gradeView(id).setVisible(true);
+        }
+    }
 }

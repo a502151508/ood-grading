@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -30,7 +31,9 @@ public class LoadJTreePanel extends JPanel {
     TaskService ts = new TaskServiceImpl();
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");  
     TreePath movePath;  
-
+    Map<DefaultMutableTreeNode,Integer> taskIdMap;
+    Map<DefaultMutableTreeNode,Integer> subTaskIdMap;
+    
 	/**
 	 * Launch the application.
 	 */
@@ -51,9 +54,11 @@ public class LoadJTreePanel extends JPanel {
         tree.setEditable(true);
         for(TaskDto td:tl) {
         	 DefaultMutableTreeNode level1 = new DefaultMutableTreeNode(td.getTaskName()+"/"+td.getWeight()+"%");
+        	 taskIdMap.put(level1, td.getTaskId());
         	 root.add(level1);
         	 for(SubTask st : td.getSubTaskList()) {
         		 DefaultMutableTreeNode level2 = new DefaultMutableTreeNode(st.getSubTaskName()+"/"+st.getWeight()+"%");
+        		 subTaskIdMap.put(level2, st.getSubTaskId());
         		 level1.add(level2);
         	 }
         }
@@ -97,5 +102,18 @@ public class LoadJTreePanel extends JPanel {
 	public JTree getTree() {
 		return (this.tree);
 	}
+	public Map<DefaultMutableTreeNode, Integer> getTaskIdMap() {
+		return taskIdMap;
+	}
+	public void setTaskIdMap(Map<DefaultMutableTreeNode, Integer> taskIdMap) {
+		this.taskIdMap = taskIdMap;
+	}
+	public Map<DefaultMutableTreeNode, Integer> getSubTaskIdMap() {
+		return subTaskIdMap;
+	}
+	public void setSubTaskIdMap(Map<DefaultMutableTreeNode, Integer> subTaskIdMap) {
+		this.subTaskIdMap = subTaskIdMap;
+	}
+	
 
 }
