@@ -55,7 +55,6 @@ public class gradeView extends JFrame {
         contentPane.add(tablePanel,BorderLayout.CENTER);
 
         this.setTitle("Grade");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(100,100,543,367);
 
      

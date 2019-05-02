@@ -23,7 +23,7 @@ public class StudentServiceImpl implements StudentService {
 		return sd.getStudent("select * from student where stu_id = ?", params);
 	}
 
-	@Override 
+	@Override
 	public boolean editStudent(Student s) {
 		String sql = "UPDATE student SET last_name = ? , first_name = ? ,stu_type = ?, class_id = ? WHERE stu_id = ?;";
 		Object[] params = { s.getLastName(), s.getFirstName(), s.getStuType(), s.getClassId(), s.getStuId() };
@@ -39,13 +39,30 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public boolean addStudent(Student s) {
-		String sql = "INSERT INTO student (last_name, first_name, class_id, stu_type,bu_id)  VALUES (?, ?, ? ,?,?);";
-		Object[] params = { s.getLastName(), s.getFirstName(), s.getClassId(), s.getStuType(), s.getBuId() };
-		return sd.insert(sql, params);
+		if(!checkIfExist(s)) {
+			String sql = "INSERT INTO student (last_name, first_name, class_id, stu_type,bu_id)  VALUES (?, ?, ? ,?,?);";
+			Object[] params = { s.getLastName(), s.getFirstName(), s.getClassId(), s.getStuType(), s.getBuId() };
+			return sd.insert(sql, params);
+		}
+		else {
+			System.out.println("Student:"+s.getBuId()+" already exists");
+			return false;
+		}
+		
+	}
+	boolean checkIfExist(Student s) {
+		Object[] params = {s.getBuId()};
+		return s.equals(sd.getStudent("select * from student where bu_id = ?", params));
 	}
 
 	@Override
-	public void LoadStudentFromCsv(String filepath, int classId) {
-		CsvUtil.LoadCsv(filepath, classId);
+	public boolean LoadStudentFromCsv(String filepath, int classId) {
+		try {
+			CsvUtil.LoadCsv(filepath, classId);	
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+		
 	}
 }

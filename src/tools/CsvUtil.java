@@ -12,10 +12,9 @@ import service.impl.StudentServiceImpl;
 import com.csvreader.CsvReader;
 
 public class CsvUtil {
-	public static void LoadCsv(String csvFilePath,int classId) {
+	public static void LoadCsv(String csvFilePath,int classId) throws IOException {
 		List<Student> sList = new ArrayList<Student>();
 		StudentService ss = new StudentServiceImpl();
-		try {
 			ArrayList<String[]> csvFileList = new ArrayList<String[]>();
 			// 定义一个CSV路径
 			// String csvFilePath =
@@ -36,9 +35,6 @@ public class CsvUtil {
 				Student s = new Student(0, classId, csvFileList.get(row)[1], csvFileList.get(row)[0], 1, csvFileList.get(row)[3]);
 				ss.addStudent(s);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 /*
 	public static void main(String[] args) {
