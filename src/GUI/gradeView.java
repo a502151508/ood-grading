@@ -16,6 +16,8 @@ import service.impl.GradeServiceImpl;
 import service.impl.TaskServiceImpl;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -25,7 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class gradeView extends JFrame {
+public class gradeView extends JFrame implements ActionListener {
     private static JTable gradeTable;
     private static TaskService ts = new TaskServiceImpl();
     private static GradeService gs = new GradeServiceImpl();
@@ -34,6 +36,7 @@ public class gradeView extends JFrame {
     private static List<StudentGradingDto> rowDataList;
     private static HashMap<Integer,Integer> subTaskPositionMap = new HashMap<>();
     private static int classId;
+    private JButton classCretriaButton;
 //    public static void main(String[] args){
 //        gradeView frame = new gradeView();
 //     //   frame.setVisible(true);
@@ -61,9 +64,10 @@ public class gradeView extends JFrame {
 
         this.setVisible(true);
     }
-    protected static JPanel createButtonPanel(String buttonName){
+    protected JPanel createButtonPanel(String buttonName){
         JPanel buttonPanel = new JPanel();
-        JButton classCretriaButton = new JButton(buttonName);
+        classCretriaButton = new JButton(buttonName);
+        classCretriaButton.addActionListener(this);
         buttonPanel.add(classCretriaButton);
         return  buttonPanel;
     }
@@ -140,4 +144,11 @@ public class gradeView extends JFrame {
     private List<StudentGradingDto> getRowData(){
     		return this.rowDataList;
     	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == classCretriaButton) {
+			new EditGradingCriteria(classId);
+		}
+		
+	}
   	}
