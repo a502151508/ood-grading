@@ -101,7 +101,14 @@ public class EditGradeView extends JFrame {
 	}
 
 	private void setTableContent() {
-		DefaultTableModel tableModel = new DefaultTableModel();
+		DefaultTableModel tableModel = new DefaultTableModel() {
+			boolean[] canEdit = new boolean[]{
+                    false, false, true
+            };
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+		};
 		tableModel.addColumn("Name");
 		tableModel.addColumn("BU Id");
 		tableModel.addColumn(this.columnName);
