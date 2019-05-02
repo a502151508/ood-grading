@@ -147,7 +147,8 @@ public class gradeView extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == classCretriaButton) {
-			new EditGradingCriteria(classId);
+			new EditGradingCriteria(classId).init();
+			setTableContent();
 		}
 		
 	}
