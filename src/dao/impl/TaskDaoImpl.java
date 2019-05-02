@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.sql.rowset.CachedRowSet;
 
+import entity.Task;
 import dao.TaskDao;
 import entity.SubTask;
 import entity.dto.TaskDto;
@@ -48,6 +49,12 @@ public class TaskDaoImpl extends BaseDaoImpl implements TaskDao {
 		}
 		return stl;
 	}
-	
+
+	@Override
+	public int addTaskAndGetId(String sql,Object[] params) {
+		
+		return DBUtil.insertAndGetId(sql, params);
+	}
+
 
 }

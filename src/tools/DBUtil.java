@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.sql.rowset.CachedRowSet;
 
@@ -22,6 +23,27 @@ public class DBUtil {
 		}
 		System.out.println("Opened database successfully");
 		return c;
+	}
+	
+	public static int insertAndGetId(String sql,Object[] params) {
+		Connection connection = getConnection();
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    int id = 0;
+	    try {
+	        pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	        for (int i = 0; i < params.length; i++) {
+	        	pstmt.setString(i + 1, String.valueOf(params[i]));
+			}
+	        pstmt.executeUpdate();
+	        rs = pstmt.getGeneratedKeys();
+	        if (rs.next()) {
+	            id = rs.getInt(1);
+	        }
+	    } catch (SQLException e) {
+	        return -1;
+	    }
+	    return id;
 	}
 
 	// execute a sql statement
