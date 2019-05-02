@@ -18,10 +18,10 @@ public class TaskServiceImpl implements TaskService {
 		return td.getTaskList(sql, classId);
 	}
 	@Override
-	public boolean addTask(Task t) {
+	public int addTask(Task t) {
 			String sql="INSERT INTO task (class_id, task_name, weight)  VALUES (?, ? ,?);";
 			Object[] params = {t.getClassId(),t.getTaskName(),t.getWeight()};
-			return td.insert(sql, params);
+			return td.addTaskAndGetId(sql,params);
 	}
 	@Override
 	public boolean addSubTask(SubTask st) {

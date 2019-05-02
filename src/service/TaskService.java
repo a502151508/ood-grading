@@ -9,7 +9,7 @@ import entity.dto.TaskDto;
 
 public interface TaskService {
 	public List<TaskDto> getTaskList(int classId);
-	public boolean addTask(Task t);
+	public int addTask(Task t);
 	public boolean addSubTask(SubTask t);
 	public boolean editTask(Task t);
 	public boolean editSubTask(SubTask st);
