@@ -2,6 +2,7 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -185,6 +186,24 @@ public class StudentPanel extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser jf = new JFileChooser();
+		
+		FileFilter ff = new FileFilter() {
+			
+			@Override
+			public String getDescription() {
+				return "*.csv";  
+			}
+
+			@Override
+			public boolean accept(File f) {
+				String name = f.getName();  
+		        return name.toLowerCase().endsWith(".csv");  
+			}
+			
+			
+		};
+		jf.addChoosableFileFilter(ff);
+		jf.setFileFilter(ff);
 		jf.showOpenDialog(this);//显示打开的文件对话框
 		File f =  jf.getSelectedFile();//使用文件类获取选择器选择的文件
 		String s = f.getAbsolutePath();//返回路径名
