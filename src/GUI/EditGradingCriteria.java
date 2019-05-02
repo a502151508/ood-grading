@@ -243,11 +243,14 @@ public class EditGradingCriteria extends JFrame {
 							String[] arryOfSubTask = subTaskString.split("/");
 							String subTaskName = arryOfSubTask[0];
 							String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
+							System.out.println("The double perce is " + subTaskPerce);
 							SubTask subTask = new SubTask(0, subTaskName, taskId, Double.valueOf(subTaskPerce));
 							ts.addSubTask(subTask);
 						}
 					}
 				}
+				
+				//gradeView.setTableContent();
 			}
 		});
 		panel.add(saveButton);

@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class gradeView extends JFrame implements ActionListener {
+public class gradeView extends JFrame  {
     private static JTable gradeTable;
     private static TaskService ts = new TaskServiceImpl();
     private static GradeService gs = new GradeServiceImpl();
@@ -36,7 +36,7 @@ public class gradeView extends JFrame implements ActionListener {
     private static List<StudentGradingDto> rowDataList;
     private static HashMap<Integer,Integer> subTaskPositionMap = new HashMap<>();
     private static int classId;
-    private JButton classCretriaButton;
+   // private JButton classCretriaButton;
 //    public static void main(String[] args){
 //        gradeView frame = new gradeView();
 //     //   frame.setVisible(true);
@@ -50,8 +50,8 @@ public class gradeView extends JFrame implements ActionListener {
     	this.classId = classId;
     	this.setLayout(new BorderLayout());
     	Container contentPane = this.getContentPane();
-        JPanel buttonPanel = createButtonPanel("Class Criteria");
-        contentPane.add(buttonPanel,BorderLayout.NORTH);
+     //   JPanel buttonPanel = createButtonPanel("Class Criteria");
+       // contentPane.add(buttonPanel,BorderLayout.NORTH);
 
 
         JPanel tablePanel = createTablePanel();
@@ -64,13 +64,13 @@ public class gradeView extends JFrame implements ActionListener {
 
         this.setVisible(true);
     }
-    protected JPanel createButtonPanel(String buttonName){
-        JPanel buttonPanel = new JPanel();
-        classCretriaButton = new JButton(buttonName);
-        classCretriaButton.addActionListener(this);
-        buttonPanel.add(classCretriaButton);
-        return  buttonPanel;
-    }
+//    protected JPanel createButtonPanel(String buttonName){
+//        JPanel buttonPanel = new JPanel();
+//        classCretriaButton = new JButton(buttonName);
+//       // classCretriaButton.addActionListener(this);
+//        buttonPanel.add(classCretriaButton);
+//        return  buttonPanel;
+//    }
     private  JPanel createTablePanel(){
 
         JPanel tablePanel= new JPanel();
@@ -97,12 +97,12 @@ public class gradeView extends JFrame implements ActionListener {
     	//ArrayList<String> column = new ArrayList<String>(Arrays.asList("Name","hw1","hw2","midterm1"));
     	//set column
     	List<TaskDto> l =ts.getTaskList(classId);
-    	
+  //  	subTaskPositionMap = new HashMap<>();
     	tableModel.addColumn("Name");
-    	
+    	int i = 0;
     	for(TaskDto t : l) {
     		List<SubTask> subTaskList = t.getSubTaskList();
-    		int i = 0;
+    		
     		for(SubTask subtask : subTaskList) {
     			//columns.add(subtask.getSubTaskName());
     			i++;
@@ -144,12 +144,17 @@ public class gradeView extends JFrame implements ActionListener {
     private List<StudentGradingDto> getRowData(){
     		return this.rowDataList;
     	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == classCretriaButton) {
-			new EditGradingCriteria(classId).init();
-			setTableContent();
-		}
-		
-	}
+//	@Override
+//	public void actionPerformed(ActionEvent e) {
+//		if (e.getSource() == classCretriaButton) {
+//			new EditGradingCriteria(classId).init();
+//			//setTableContent();
+//		}
+//		
+//	}
+//	@Override
+//	public void actionPerformed(ActionEvent arg0) {
+//		// TODO Auto-generated method stub
+//		
+//	}
   	}
