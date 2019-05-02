@@ -206,7 +206,8 @@ public class EditGradingCriteria extends JFrame {
 						String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
 						Task task = new Task(0, 2, taskName, Double.valueOf(taskPerce));
 //						System.out.println(task.toString());
-						ts.addTask(task);
+						int taskId = ts.addTask(task);
+						taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
 					}
 				}
 				// get task id from db
@@ -253,7 +254,7 @@ public class EditGradingCriteria extends JFrame {
 
 		this.getContentPane().add(panel, BorderLayout.SOUTH);
 		this.pack();
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	//	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
 
