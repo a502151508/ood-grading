@@ -228,11 +228,13 @@ public class ClassPanel extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			//load existed class setting
 			//get selected row
-			int row = classTable.getSelectedRow();
-			int modelRow = classTable.convertRowIndexToModel(row);
-			DefaultTableModel model = (DefaultTableModel) classTable.getModel();
+			try {
+				int row = classTable.getSelectedRow();
+				int modelRow = classTable.convertRowIndexToModel(row);
+				DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 
-			int classId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+				int classId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+			
 			
 			
 			
@@ -265,10 +267,16 @@ public class ClassPanel extends JFrame {
 			classCreation.add(classSemesterTxt);
 			classCreation.add(createClassButton);
 			classCreation.setVisible(true);
+			
 
 			classCreationPopup.add(classCreation);
 			classCreationPopup.setVisible(true);
 			classCreationPopup.pack();
+			}
+			catch (Exception ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Please select a class!");
+			}
 
 			//int newClassId = cl.getNewClassId();
 			//System.out.println("newClassId is " + newClassId);
