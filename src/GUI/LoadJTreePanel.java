@@ -133,4 +133,17 @@ public class LoadJTreePanel extends JPanel {
 		this.subTaskIdMap = subTaskIdMap;
 	}
 
+	public int getTaskByString(String str) {
+		if(taskIdMap.containsKey(str)) {
+			return taskIdMap.get(str);
+		}
+		else return 0;
+	}
+	public int getSubTaskByString(String str) {
+		if(subTaskIdMap.containsKey(str)) {
+			return subTaskIdMap.get(str);
+		}
+		else return 0;
+	}
+
 }

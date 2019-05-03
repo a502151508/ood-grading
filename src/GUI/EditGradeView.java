@@ -41,10 +41,7 @@ public class EditGradeView extends JFrame {
 				Double num = null;
 				try {
 					num = Double.parseDouble((String) aValue);
-					if (num > 100 || num < 0) {
-						aValue = "";
-						throw new Exception();
-					} else if (num < -100) {
+					if (num > 100 || num < -100) {
 						aValue = "";
 						throw new Exception();
 					} else if (num >= -100 && num < 0) {
@@ -55,7 +52,7 @@ public class EditGradeView extends JFrame {
 					ex.printStackTrace();
 					javax.swing.JOptionPane.showMessageDialog(null, "Only Number!");
 					return;
-				}catch(Exception e) {
+				} catch (Exception e) {
 					javax.swing.JOptionPane.showMessageDialog(null, "Out of range");
 				}
 				super.setValueAt(aValue, rowIndex, columnIndex);
