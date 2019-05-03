@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -60,7 +61,7 @@ public class EditGradingCriteria extends JFrame {
 
 		treePanel = new LoadJTreePanel(classId);
 		this.tree = ((LoadJTreePanel) treePanel).getTree();
-		this.getContentPane().add(treePanel, BorderLayout.NORTH);
+		this.getContentPane().add(treePanel, BorderLayout.WEST);
 
 		this.setTitle("Grading Criteria");
 		tree.setRootVisible(false);
@@ -98,6 +99,7 @@ public class EditGradingCriteria extends JFrame {
 		tree.addMouseListener(ml);
 
 		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(5, 1));
 
 		addParentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -303,7 +305,7 @@ public class EditGradingCriteria extends JFrame {
 		});
 		panel.add(saveButton);
 
-		this.getContentPane().add(panel, BorderLayout.SOUTH);
+		this.getContentPane().add(panel, BorderLayout.EAST);
 		this.pack();
 	//	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
