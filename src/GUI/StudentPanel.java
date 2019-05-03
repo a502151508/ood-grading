@@ -12,9 +12,12 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
+import service.GradeService;
 import service.StudentService;
+import service.impl.GradeServiceImpl;
 import service.impl.StudentServiceImpl;
 import entity.Student;
+import entity.dto.GradeDto;
 
 public class StudentPanel extends JFrame implements ActionListener, DocumentListener {
 
@@ -32,6 +35,7 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 	JTextField searchField;
 
 	StudentService ss = new StudentServiceImpl();
+	GradeService gs = new GradeServiceImpl();
 	private int classID;
 
 	public StudentPanel(int classID) {
@@ -277,10 +281,16 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				int modelRow = studentTable.convertRowIndexToModel(row);
 				DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
 				int stuId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
-				new ShowGradesOfStudentFrame(ss.getStudent(stuId));
+				List<GradeDto> grades = gs.getGrades(stuId);
+				if(grades.size()>0) {
+					new ShowGradesOfStudentFrame(ss.getStudent(stuId));
+				}else {
+					JOptionPane.showMessageDialog(null, "Student does not have grades.");
+				}
+				
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
-				JOptionPane.showMessageDialog(null, "Please select a class!");
+				JOptionPane.showMessageDialog(null, "Please select a student.");
 			}
 		}
 
