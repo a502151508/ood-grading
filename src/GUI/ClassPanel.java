@@ -74,12 +74,16 @@ public class ClassPanel extends JFrame {
 		JButton switchStudentButton = new JButton("Student View");
 		switchStudentButton.addActionListener(new StudentViewActionListener());
 
+		JButton loadExistedButton = new JButton("Load Existed Criterias");
+		loadExistedButton.addActionListener(new GradingCriteraLoadListener());
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		buttonsPanel.add(removeClassButton);
 		buttonsPanel.add(addClassButton);
 		buttonsPanel.add(classSettingsButton);
 		buttonsPanel.add(switchGradeButton);
 		buttonsPanel.add(switchStudentButton);
+		buttonsPanel.add(loadExistedButton);
 		buttonsPanel.setVisible(true);
 
 		classTable.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Id", "Semester", "Class Name" }));
@@ -238,6 +242,11 @@ public class ClassPanel extends JFrame {
 			System.out.println(ex.getMessage());
 			JOptionPane.showMessageDialog(null, "Please select a class!");
 		}
+		}
+	}
+	private class GradingCriteraLoadListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
 		}
 	}
 }
