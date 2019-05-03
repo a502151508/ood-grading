@@ -158,7 +158,7 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
-				JOptionPane.showMessageDialog(null, "Please select a class!");
+				JOptionPane.showMessageDialog(null, "Please select a student!");
 			}
 		}
 	}
@@ -175,6 +175,24 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 			firstNameTxt = new JTextField("Enter First Name");
 			lastNameTxt = new JTextField("Enter Last Name");
 			BUIDTxt = new JTextField("Enter BUID");
+			
+			firstNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					firstNameTxt.setText("");
+				}
+			});
+			
+			lastNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					lastNameTxt.setText("");
+				}
+			});
+			
+			BUIDTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					BUIDTxt.setText("");
+				}
+			});
 
 			studentCreation.add(firstNameTxt);
 			studentCreation.add(lastNameTxt);
@@ -198,6 +216,24 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				firstNameTxt.setText("Enter First Name");
 				lastNameTxt.setText("Enter Last Name");
 				BUIDTxt.setText("Enter BUID");
+				
+				firstNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						firstNameTxt.setText("");
+					}
+				});
+				
+				lastNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						lastNameTxt.setText("");
+					}
+				});
+				
+				BUIDTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						BUIDTxt.setText("");
+					}
+				});
 				DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
 				if (!firstName.isEmpty() && !lastName.isEmpty() && !BUID.isEmpty()) {
 					Student add = new Student(0, 2, firstName, lastName, 1, BUID);
