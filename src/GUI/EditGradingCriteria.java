@@ -242,7 +242,20 @@ public class EditGradingCriteria extends JFrame {
 					}
 				}
 
-				
+				if(!inputValidation(totalTaskPerce)  ) {
+					JOptionPane.showMessageDialog(null,"total Task percentage must be equal to 100");
+				}
+				else {
+					for(Task t: taskToBeEdited) {
+						ts.editTask(t);
+					}
+					for(int i = 0; i < taskToBeAdded.size(); i++) {
+						Task t = taskToBeAdded.get(i);
+						DefaultMutableTreeNode taskNode = (DefaultMutableTreeNode) taskNodeToBeAdded.get(i);
+						int taskId = ts.addTask(t);
+						taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
+					}
+				}
 				
 				
 				
@@ -296,7 +309,7 @@ public class EditGradingCriteria extends JFrame {
 					
 					if(!inputValidation(totalSubTaskPerce,target)) {
 						JOptionPane.showMessageDialog(null,"total subTask percentage must be equal to " + target);
-						correctSub = false; 
+					//	correctSub = false; 
 					}else {
 						for(SubTask sbt : subTaskToBeEdited) {
 							ts.editSubTask(sbt);
@@ -306,21 +319,8 @@ public class EditGradingCriteria extends JFrame {
 						}
 					}
 				}
-				System.out.println("correctSub is " + correctSub);
-				if(!inputValidation(totalTaskPerce) || !correctSub ) {
-					JOptionPane.showMessageDialog(null,"total Task percentage must be equal to 100");
-				}
-				else {
-					for(Task t: taskToBeEdited) {
-						ts.editTask(t);
-					}
-					for(int i = 0; i < taskToBeAdded.size(); i++) {
-						Task t = taskToBeAdded.get(i);
-						DefaultMutableTreeNode taskNode = (DefaultMutableTreeNode) taskNodeToBeAdded.get(i);
-						int taskId = ts.addTask(t);
-						taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
-					}
-				}
+			//	System.out.println("correctSub is " + correctSub);
+			
 				//gradeView.setTableContent();
 			}
 		});
