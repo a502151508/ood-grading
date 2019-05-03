@@ -56,11 +56,11 @@ public class EditGradingCriteria extends JFrame {
 	JButton saveButton = new JButton("Save");
 
 	public void init() {
-
+	
 		treePanel = new LoadJTreePanel(classId);
-		// treePanel.setPreferredSize(new Dimension(300, 300));
 		this.tree = ((LoadJTreePanel) treePanel).getTree();
-		this.getContentPane().add(treePanel, BorderLayout.CENTER);
+		this.getContentPane().add(treePanel, BorderLayout.NORTH);
+		
 		this.setTitle("Grading Criteria");
 		tree.setRootVisible(false);
 		model = (DefaultTreeModel) tree.getModel();
