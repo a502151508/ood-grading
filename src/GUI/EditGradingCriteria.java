@@ -293,6 +293,7 @@ public class EditGradingCriteria extends JFrame {
 							subTaskToBeAdded.add(subTask);
 						}
 					}
+					
 					if(!inputValidation(totalSubTaskPerce,target)) {
 						JOptionPane.showMessageDialog(null,"total subTask percentage must be equal to " + target);
 						correctSub = false; 
@@ -305,7 +306,8 @@ public class EditGradingCriteria extends JFrame {
 						}
 					}
 				}
-				if(!inputValidation(totalTaskPerce) && correctSub) {
+				System.out.println("correctSub is " + correctSub);
+				if(!inputValidation(totalTaskPerce) || !correctSub ) {
 					JOptionPane.showMessageDialog(null,"total Task percentage must be equal to 100");
 				}
 				else {

@@ -8,11 +8,13 @@ import java.awt.event.*;
 import java.util.List;
 
 import service.ClassesService;
+import service.TaskService;
 import service.impl.ClassesServiceImpl;
+import service.impl.TaskServiceImpl;
 import entity.Classes;
 
 public class ClassPanel extends JFrame {
-
+	private  TaskService ts = new TaskServiceImpl();
 	JScrollPane scrollPane;
 	JTable classTable;
 	JFrame classCreationPopup;
@@ -153,6 +155,18 @@ public class ClassPanel extends JFrame {
 
 			classNameTxt = new JTextField("Enter Class Name");
 			classSemesterTxt = new JTextField("Enter Semester");
+			
+			classNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					classNameTxt.setText("");
+				}
+			});
+			
+			classSemesterTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					classSemesterTxt.setText("");
+				}
+			});
 
 			JButton createClassButton = new JButton("Create Class");
 			createClassButton.addActionListener(new CreateClassActionListener());
@@ -175,6 +189,19 @@ public class ClassPanel extends JFrame {
 				semester = classSemesterTxt.getText();
 				classNameTxt.setText("Enter Class Name");
 				classSemesterTxt.setText("Enter Semester");
+				
+				classNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						classNameTxt.setText("");
+					}
+				});
+				
+				classSemesterTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						classSemesterTxt.setText("");
+					}
+				});
+				
 				DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 				if (!className.isEmpty() && !semester.isEmpty()) {
 					Classes add = new Classes(0, className, semester);
@@ -199,6 +226,8 @@ public class ClassPanel extends JFrame {
 			DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 
 			int classId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+			ts.getTaskList(classId);
+			
 			
 		//	System.out.println("id number is " + id);
 			classCreationPopup = new JFrame();
@@ -206,6 +235,18 @@ public class ClassPanel extends JFrame {
 
 			classNameTxt = new JTextField("Enter Class Name");
 			classSemesterTxt = new JTextField("Enter Semester");
+			
+			classNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					classNameTxt.setText("");
+				}
+			});
+			
+			classSemesterTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					classSemesterTxt.setText("");
+				}
+			});
 
 			JButton createClassButton = new JButton("Create Class");
 			createClassButton.addActionListener(new CreateClassActionListener());
@@ -228,6 +269,18 @@ public class ClassPanel extends JFrame {
 				semester = classSemesterTxt.getText();
 				classNameTxt.setText("Enter Class Name");
 				classSemesterTxt.setText("Enter Semester");
+				
+				classNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						classNameTxt.setText("");
+					}
+				});
+				
+				classSemesterTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						classSemesterTxt.setText("");
+					}
+				});
 				DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 				if (!className.isEmpty() && !semester.isEmpty()) {
 					Classes add = new Classes(0, className, semester);
