@@ -250,7 +250,12 @@ public class EditGradingCriteria extends JFrame {
 				
 				subTaskNodeIdMap = ((LoadJTreePanel) treePanel).getSubTaskIdMap();
 				for (int i = 0; i < numOfTask; i++) {
-					TreeNode taskNode = root.getChildAt(i);		
+					DefaultMutableTreeNode taskNode = (DefaultMutableTreeNode)root.getChildAt(i);		
+					totalSubTaskPerce = new ArrayList<>();
+					subTaskToBeEdited = new ArrayList<>();
+					subTaskToBeAdded = new ArrayList<>();
+					
+					
 					String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
 					String[] arrayOfTask = taskString.split("/");
 					
@@ -261,11 +266,12 @@ public class EditGradingCriteria extends JFrame {
 					int taskId = taskNodeIdMap.get(taskNode);
 					int numOfSubTask = taskNode.getChildCount();
 					for (int j = 0; j < numOfSubTask; j++) {
-						TreeNode subTaskNode = taskNode.getChildAt(j);
+						DefaultMutableTreeNode subTaskNode = (DefaultMutableTreeNode) taskNode.getChildAt(j);
 
 						if(subTaskNodeIdMap.containsKey(subTaskNode)) {
 							int subTaskId = subTaskNodeIdMap.get(subTaskNode);
-							String subTaskString = (String) ((DefaultMutableTreeNode) subTaskNode).getUserObject();
+							Object obj = subTaskNode.getUserObject();
+							String subTaskString = obj.toString();
 							String[] arryOfSubTask = subTaskString.split("/");
 							String subTaskName = arryOfSubTask[0];
 							String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
@@ -275,7 +281,8 @@ public class EditGradingCriteria extends JFrame {
 							//ts.editSubTask(subTask);
 						}
 						else {
-							String subTaskString = (String) ((DefaultMutableTreeNode) subTaskNode).getUserObject();
+							Object obj = subTaskNode.getUserObject();
+							String subTaskString = obj.toString();
 							String[] arryOfSubTask = subTaskString.split("/");
 							String subTaskName = arryOfSubTask[0];
 							String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
@@ -285,18 +292,16 @@ public class EditGradingCriteria extends JFrame {
 							//ts.addSubTask(subTask);
 							subTaskToBeAdded.add(subTask);
 						}
-						if(!inputValidation(totalSubTaskPerce,target)) {
-							JOptionPane.showMessageDialog(null,"total subTask percentage must be equal to " + target);
-						}else {
-							for(SubTask sbt : subTaskToBeEdited) {
-								ts.editSubTask(sbt);
-							}
-							for(SubTask sbt: subTaskToBeAdded) {
-								ts.addSubTask(sbt);
-							}
+					}
+					if(!inputValidation(totalSubTaskPerce,target)) {
+						JOptionPane.showMessageDialog(null,"total subTask percentage must be equal to " + target);
+					}else {
+						for(SubTask sbt : subTaskToBeEdited) {
+							ts.editSubTask(sbt);
 						}
-						
-						
+						for(SubTask sbt: subTaskToBeAdded) {
+							ts.addSubTask(sbt);
+						}
 					}
 				}
 				
