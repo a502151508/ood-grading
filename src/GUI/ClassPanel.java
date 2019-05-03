@@ -106,8 +106,8 @@ public class ClassPanel extends JFrame {
 								GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(14, Short.MAX_VALUE)));
 
-		add(scrollView, BorderLayout.NORTH);
-		add(buttonsPanel, BorderLayout.SOUTH);
+		add(scrollView, BorderLayout.EAST);
+		add(buttonsPanel, BorderLayout.WEST);
 
 		pack();
 	}
