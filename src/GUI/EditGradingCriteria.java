@@ -205,7 +205,7 @@ public class EditGradingCriteria extends JFrame {
 					TreeNode taskNode = root.getChildAt(i);
 					if(taskNodeIdMap.containsKey(taskNode)) {
 						int taskId = taskNodeIdMap.get(taskNode);
-						String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
+						String taskString =  ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
 						String[] arrayOfTask = taskString.split("/");
 						String taskName = arrayOfTask[0];
 						String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
@@ -215,7 +215,7 @@ public class EditGradingCriteria extends JFrame {
 						taskToBeEdited.add(task);
 					}
 					else {
-						String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
+						String taskString = ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
 						String[] arrayOfTask = taskString.split("/");
 						String taskName = arrayOfTask[0];
 						String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
@@ -256,7 +256,7 @@ public class EditGradingCriteria extends JFrame {
 					subTaskToBeAdded = new ArrayList<>();
 					
 					
-					String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
+					String taskString =  ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
 					String[] arrayOfTask = taskString.split("/");
 					
 					String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
