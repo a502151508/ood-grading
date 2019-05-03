@@ -177,18 +177,16 @@ public class EditGradingCriteria extends JFrame {
 
 				EditCategory cateInfo = new EditCategory();
 				cateInfo.setVisible(true);
-				;
 
 				JButton save = cateInfo.btnSave;
 				save.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						String name = cateInfo.getTaskName();
 						String percent = cateInfo.getTaskPercent();
-						DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name + "/" + percent + "%");
 						DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
 								.getLastSelectedPathComponent();
-						selectedNode.setUserObject(newNode);
-						TreeNode[] nodes = model.getPathToRoot(newNode);
+						selectedNode.setUserObject(name + "/" + percent + "%");
+						TreeNode[] nodes = model.getPathToRoot(selectedNode);
 						TreePath path = new TreePath(nodes);
 						tree.scrollPathToVisible(path);
 						tree.updateUI();
