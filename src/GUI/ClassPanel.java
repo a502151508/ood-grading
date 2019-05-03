@@ -118,21 +118,25 @@ public class ClassPanel extends JFrame {
 
 	public class RemoveClassListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			int row = classTable.getSelectedRow();
-			int modelRow = classTable.convertRowIndexToModel(row);
-			DefaultTableModel model = (DefaultTableModel) classTable.getModel();
+			try {
+				int row = classTable.getSelectedRow();
+				int modelRow = classTable.convertRowIndexToModel(row);
+				DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 
-			int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
-			String sem = model.getValueAt(modelRow, 1).toString();
-			String className = model.getValueAt(modelRow, 2).toString();
+				int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+				String sem = model.getValueAt(modelRow, 1).toString();
+				String className = model.getValueAt(modelRow, 2).toString();
 
-			Classes rem = new Classes(id, className, sem);
+				Classes rem = new Classes(id, className, sem);
 
-			ClassesService cs = new ClassesServiceImpl();
-			cs.deleteClass(rem);
+				ClassesService cs = new ClassesServiceImpl();
+				cs.deleteClass(rem);
 
-			model.removeRow(modelRow);
-
+				model.removeRow(modelRow);
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Please select a class!");
+			}
 		}
 	}
 
@@ -191,9 +195,9 @@ public class ClassPanel extends JFrame {
 
 				int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
 
-//				setVisible(false);
+				// setVisible(false);
 				new EditGradingCriteria(id).init();
-				
+
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 				JOptionPane.showMessageDialog(null, "Please select a class!");
@@ -222,6 +226,7 @@ public class ClassPanel extends JFrame {
 	private class GradeViewActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			try {
 			int row = classTable.getSelectedRow();
 			int modelRow = classTable.convertRowIndexToModel(row);
 			DefaultTableModel model = (DefaultTableModel) classTable.getModel();
@@ -229,6 +234,10 @@ public class ClassPanel extends JFrame {
 			int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
 
 			new gradeView(id).setVisible(true);
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			JOptionPane.showMessageDialog(null, "Please select a class!");
+		}
 		}
 	}
 }

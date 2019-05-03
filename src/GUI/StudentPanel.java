@@ -26,6 +26,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 	String firstName = "Test";
 	String lastName = "Fall 2019";
 	String BUID = "";
+	JButton switchClassButton, switchGradeButton;
 	StudentService ss = new StudentServiceImpl();
 	private int classID;
 
@@ -33,7 +34,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 		this.classID = classID;
 		initComponents();
 		populateTable();
-		
+
 	}
 
 	public List<Student> ListStudents(int classID) {
@@ -73,10 +74,10 @@ public class StudentPanel extends JFrame implements ActionListener {
 		JButton addStudentButton = new JButton("Add Student");
 		addStudentButton.addActionListener(new AddStudentListener());
 
-		JButton switchGradeButton = new JButton("Grade View");
-		switchGradeButton.addActionListener(null);
+		switchGradeButton = new JButton("Show Grades");
+		switchGradeButton.addActionListener(this);
 
-		JButton switchClassButton = new JButton("Load Student From CSV");
+		switchClassButton = new JButton("Load Student From CSV");
 		switchClassButton.addActionListener(this);
 
 		buttonsPanel.add(removeStudentButton);
@@ -118,20 +119,26 @@ public class StudentPanel extends JFrame implements ActionListener {
 	private class RemoveStudentListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int row = studentTable.getSelectedRow();
-			int modelRow = studentTable.convertRowIndexToModel(row);
-			DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
+			try {
+				int row = studentTable.getSelectedRow();
+				int modelRow = studentTable.convertRowIndexToModel(row);
+				DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
 
-			int BUID = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
-			String firstName = model.getValueAt(modelRow, 1).toString();
-			String lastName = model.getValueAt(modelRow, 2).toString();
+				int BUID = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+				String firstName = model.getValueAt(modelRow, 1).toString();
+				String lastName = model.getValueAt(modelRow, 2).toString();
 
-			Student rem = new Student(0, 2, firstName, lastName, 1, "U" + BUID);
+				Student rem = new Student(BUID, 2, firstName, lastName, 1, "U" + BUID);
 
-			StudentService ss = new StudentServiceImpl();
-			ss.deleteStudent(rem);
+				StudentService ss = new StudentServiceImpl();
+				ss.deleteStudent(rem);
 
-			model.removeRow(modelRow);
+				model.removeRow(modelRow);
+
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Please select a class!");
+			}
 		}
 	}
 
@@ -175,7 +182,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 					Student add = new Student(0, 2, firstName, lastName, 1, BUID);
 
 					model.addRow(new Object[] { BUID, firstName, lastName });
-					
+
 					ss.addStudent(add);
 				}
 				studentPopup.setVisible(false);
@@ -185,35 +192,42 @@ public class StudentPanel extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JFileChooser jf = new JFileChooser();
-		
-		FileFilter ff = new FileFilter() {
-			
-			@Override
-			public String getDescription() {
-				return "*.csv";  
-			}
+		if(e.getSource()==switchClassButton) {
+			JFileChooser jf = new JFileChooser();
 
-			@Override
-			public boolean accept(File f) {
-				String name = f.getName();  
-		        return name.toLowerCase().endsWith(".csv");  
+			FileFilter ff = new FileFilter() {
+
+				@Override
+				public String getDescription() {
+					return "*.csv";
+				}
+
+				@Override
+				public boolean accept(File f) {
+					String name = f.getName();
+					return name.toLowerCase().endsWith(".csv");
+				}
+			};
+			jf.addChoosableFileFilter(ff);
+			jf.setFileFilter(ff);
+			jf.showOpenDialog(this);// 显示打开的文件对话框
+			File f = jf.getSelectedFile();// 使用文件类获取选择器选择的文件
+			String s = f.getAbsolutePath();// 返回路径名
+			if (ss.LoadStudentFromCsv(s, classID)) {
+				JOptionPane.showMessageDialog(null, "Load Successfull");
+				populateTable();
+			} else {
+				JOptionPane.showMessageDialog(null, "Failed");
 			}
-			
-			
-		};
-		jf.addChoosableFileFilter(ff);
-		jf.setFileFilter(ff);
-		jf.showOpenDialog(this);//显示打开的文件对话框
-		File f =  jf.getSelectedFile();//使用文件类获取选择器选择的文件
-		String s = f.getAbsolutePath();//返回路径名
-		if(ss.LoadStudentFromCsv(s, classID)) {
-			JOptionPane.showMessageDialog(null, "Load Successfull");
-			populateTable();
 		}
-		else {
-			JOptionPane.showMessageDialog(null, "Failed");
+		else if(e.getSource()==switchGradeButton) {
+			int row = studentTable.getSelectedRow();
+			int modelRow = studentTable.convertRowIndexToModel(row);
+			DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
+			int stuId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+			new ShowGradesOfStudentFrame(ss.getStudent(stuId));
 		}
 		
+
 	}
 }

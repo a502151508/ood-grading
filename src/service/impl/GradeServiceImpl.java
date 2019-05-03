@@ -14,6 +14,7 @@ import dao.impl.GradeDaoImpl;
 import entity.Grade;
 import entity.Student;
 import entity.SubTask;
+import entity.dto.GradeDto;
 import entity.dto.StudentGradingDto;
 import entity.dto.TaskDto;
 import service.GradeService;
@@ -44,14 +45,16 @@ public class GradeServiceImpl implements GradeService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			StudentGradingDto sgDto = new StudentGradingDto(s, getGrades( s.getStuId()));
+			StudentGradingDto sgDto = new StudentGradingDto(s, gd.getGrade("select * from grade where stu_id = ?", s.getStuId()));
 			sgl.add(sgDto);
 		}
 		return sgl;
 	}
 	@Override
-	public List<Grade> getGrades(int stuId) {
-		return gd.getGradeOfStudent("select * from grade where stu_id = ?", stuId);
+	public List<GradeDto> getGrades(int stuId) {
+		return gd.getGradeOfStudent("select grade_id,score,sub_task.sub_task_id sub_task_id,sub_task.weight,"
+				+ "stu_id,task_name,sub_task_name from grade inner join sub_task on grade.sub_task_id=sub_task.sub_task_id "
+				+ "inner join task on sub_task.task_id=task.task_id where grade.stu_id = ?", stuId);
 	}
 	@Override
 	public boolean giveGrade(int stuId, int subTaskID,double score) {

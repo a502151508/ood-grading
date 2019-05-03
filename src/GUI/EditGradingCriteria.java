@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -16,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -40,7 +42,6 @@ public class EditGradingCriteria extends JFrame {
 	TaskService ts = new TaskServiceImpl();
 	Map<DefaultMutableTreeNode, Integer> taskNodeIdMap = new HashMap<>();
 	Map<DefaultMutableTreeNode, Integer> subTaskNodeIdMap = new HashMap<>();
-	
 
 	DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");
 	DefaultMutableTreeNode assignment = new DefaultMutableTreeNode("Assignments/50%");
@@ -57,9 +58,9 @@ public class EditGradingCriteria extends JFrame {
 	public void init() {
 
 		treePanel = new LoadJTreePanel(classId);
+		// treePanel.setPreferredSize(new Dimension(300, 300));
 		this.tree = ((LoadJTreePanel) treePanel).getTree();
-		this.getContentPane().add(treePanel, BorderLayout.NORTH);
-
+		this.getContentPane().add(treePanel, BorderLayout.CENTER);
 		this.setTitle("Grading Criteria");
 		tree.setRootVisible(false);
 		model = (DefaultTreeModel) tree.getModel();
@@ -126,7 +127,7 @@ public class EditGradingCriteria extends JFrame {
 				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 				EditCategory cateInfo = new EditCategory();
 				cateInfo.setVisible(true);
-				;
+				
 
 				JButton save = cateInfo.btnSave;
 				save.addActionListener(new ActionListener() {
@@ -146,10 +147,23 @@ public class EditGradingCriteria extends JFrame {
 		panel.add(addChildButton);
 
 		deleteButton.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent event) {
-				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-				if (selectedNode != null && selectedNode.getParent() != null) {
-					model.removeNodeFromParent(selectedNode);
+				try {
+					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+					if (selectedNode != null && selectedNode.getParent() != null) {
+						if(taskNodeIdMap.containsKey(selectedNode)) {
+							ts.deleteTask(new Task(taskNodeIdMap.get(selectedNode), 0, null, 0));
+						}
+						else if (subTaskNodeIdMap.containsKey(selectedNode)) {
+							ts.deleteSubTask(new SubTask(subTaskNodeIdMap.get(selectedNode), null, 0, 0));
+						}
+						model.removeNodeFromParent(selectedNode);
+						
+					}
+				} catch (Exception ex) {
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Please select a category!");
 				}
 			}
 		});
@@ -183,13 +197,14 @@ public class EditGradingCriteria extends JFrame {
 
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+
 				// add task to db
 				root = (DefaultMutableTreeNode) tree.getModel().getRoot();
-				taskNodeIdMap = ((LoadJTreePanel) treePanel).getTaskIdMap(); 
+				taskNodeIdMap = ((LoadJTreePanel) treePanel).getTaskIdMap();
 				int numOfTask = root.getChildCount();
 				for (int i = 0; i < numOfTask; i++) {
 					TreeNode taskNode = root.getChildAt(i);
-					if(taskNodeIdMap.containsKey(taskNode)) {
+					if (taskNodeIdMap.containsKey(taskNode)) {
 						int taskId = taskNodeIdMap.get(taskNode);
 						String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
 						String[] arrayOfTask = taskString.split("/");
@@ -198,38 +213,38 @@ public class EditGradingCriteria extends JFrame {
 						Task task = new Task(taskId, 2, taskName, Double.valueOf(taskPerce));
 						ts.editTask(task);
 
-					}
-					else {
+					} else {
 						String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
 						String[] arrayOfTask = taskString.split("/");
 						String taskName = arrayOfTask[0];
 						String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
 						Task task = new Task(0, 2, taskName, Double.valueOf(taskPerce));
-//						System.out.println(task.toString());
+						// System.out.println(task.toString());
 						int taskId = ts.addTask(task);
-						taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
+						taskNodeIdMap.put((DefaultMutableTreeNode) taskNode, taskId);
 					}
 				}
 				// get task id from db
-//				List<TaskDto> taskDtoList = ts.getTaskList(2);
-//				for (TaskDto tdto : taskDtoList) {
-//					String taskName = tdto.getTaskName();
-//					int taskId = tdto.getTaskId();
-//					taskNameIdMap.put(taskName, taskId);
-//				}
+				// List<TaskDto> taskDtoList = ts.getTaskList(2);
+				// for (TaskDto tdto : taskDtoList) {
+				// String taskName = tdto.getTaskName();
+				// int taskId = tdto.getTaskId();
+				// taskNameIdMap.put(taskName, taskId);
+				// }
 				// add subtasks to db
 				subTaskNodeIdMap = ((LoadJTreePanel) treePanel).getSubTaskIdMap();
 				for (int i = 0; i < numOfTask; i++) {
-					TreeNode taskNode = root.getChildAt(i);				
-					//					String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
-					//					String[] arrayOfTask = taskString.split("/");
-					//					String taskName = arrayOfTask[0];
+					TreeNode taskNode = root.getChildAt(i);
+					// String taskString = (String) ((DefaultMutableTreeNode)
+					// taskNode).getUserObject();
+					// String[] arrayOfTask = taskString.split("/");
+					// String taskName = arrayOfTask[0];
 					int taskId = taskNodeIdMap.get(taskNode);
 					int numOfSubTask = taskNode.getChildCount();
 					for (int j = 0; j < numOfSubTask; j++) {
 						TreeNode subTaskNode = taskNode.getChildAt(j);
 
-						if(subTaskNodeIdMap.containsKey(subTaskNode)) {
+						if (subTaskNodeIdMap.containsKey(subTaskNode)) {
 							int subTaskId = subTaskNodeIdMap.get(subTaskNode);
 							String subTaskString = (String) ((DefaultMutableTreeNode) subTaskNode).getUserObject();
 							String[] arryOfSubTask = subTaskString.split("/");
@@ -237,8 +252,7 @@ public class EditGradingCriteria extends JFrame {
 							String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
 							SubTask subTask = new SubTask(subTaskId, subTaskName, taskId, Double.valueOf(subTaskPerce));
 							ts.editSubTask(subTask);
-						}
-						else {
+						} else {
 							String subTaskString = (String) ((DefaultMutableTreeNode) subTaskNode).getUserObject();
 							String[] arryOfSubTask = subTaskString.split("/");
 							String subTaskName = arryOfSubTask[0];
@@ -248,13 +262,14 @@ public class EditGradingCriteria extends JFrame {
 						}
 					}
 				}
+
 			}
 		});
 		panel.add(saveButton);
 
 		this.getContentPane().add(panel, BorderLayout.SOUTH);
 		this.pack();
-	//	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
 
@@ -265,9 +280,8 @@ public class EditGradingCriteria extends JFrame {
 	public void setClassId(int classId) {
 		this.classId = classId;
 	}
-	
 
-//	public static void main(String[] args) {
-//		new EditGradingCriteria().init();
-//	}
+	public static void main(String[] args) {
+		new EditGradingCriteria(2).init();
+	}
 }
