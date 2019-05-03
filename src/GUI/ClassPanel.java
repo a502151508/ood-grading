@@ -12,6 +12,9 @@ import service.TaskService;
 import service.impl.ClassesServiceImpl;
 import service.impl.TaskServiceImpl;
 import entity.Classes;
+import entity.SubTask;
+import entity.Task;
+import entity.dto.TaskDto;
 
 public class ClassPanel extends JFrame {
 	private  TaskService ts = new TaskServiceImpl();
@@ -171,6 +174,10 @@ public class ClassPanel extends JFrame {
 		}
 
 		private class CreateClassActionListener implements ActionListener {
+
+//			public CreateClassActionListener() {
+//				this.classId = 0;
+//			}
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				className = classNameTxt.getText();
@@ -201,7 +208,7 @@ public class ClassPanel extends JFrame {
 			DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 
 			int classId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
-			ts.getTaskList(classId);
+			
 			
 			
 		//	System.out.println("id number is " + id);
@@ -212,8 +219,11 @@ public class ClassPanel extends JFrame {
 			classSemesterTxt = new JTextField("Enter Semester");
 
 			JButton createClassButton = new JButton("Create Class");
-			createClassButton.addActionListener(new CreateClassActionListener());
+			CreateClassActionListener cl = new CreateClassActionListener(classId);
+			createClassButton.addActionListener(cl);
 
+			
+			
 			classCreation.add(classNameTxt);
 			classCreation.add(classSemesterTxt);
 			classCreation.add(createClassButton);
@@ -223,9 +233,19 @@ public class ClassPanel extends JFrame {
 			classCreationPopup.setVisible(true);
 			classCreationPopup.pack();
 
+			//int newClassId = cl.getNewClassId();
+			//System.out.println("newClassId is " + newClassId);
+			//set new task from taskDto
 
+			
+			
+			
 		}
 		private class CreateClassActionListener implements ActionListener {
+			int classId;
+			public CreateClassActionListener(int classId) {
+				this.classId = classId;
+			}
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				className = classNameTxt.getText();
@@ -239,8 +259,22 @@ public class ClassPanel extends JFrame {
 					model.addRow(new Object[] { "0", semester, className });
 
 					ClassesService classesService = new ClassesServiceImpl();
-					classesService.addClass(add);
+					int newClassId = classesService.addClass(add);
+					System.out.println("In cl class ID is " + newClassId);
 					populateTable();
+					
+					List<TaskDto> taskDtoList = ts.getTaskList(classId);
+					for(TaskDto tdo : taskDtoList) {
+						Task newTask = new Task(0,newClassId,tdo.getTaskName(),tdo.getWeight());
+						System.out.println("new added task is " + newTask);
+						int taskId = ts.addTask(newTask);
+						List<SubTask> subTaskList = tdo.getSubTaskList();
+						for(SubTask st: subTaskList) {
+							SubTask newSubTask = new SubTask(0,st.getSubTaskName(),taskId,st.getWeight());
+							ts.addSubTask(newSubTask);
+							System.out.println("new SubTask is " + newSubTask);
+						}
+					}
 
 				}
 				classCreationPopup.setVisible(false);
