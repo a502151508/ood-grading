@@ -121,7 +121,6 @@ public class EditGradingCriteria extends JFrame {
 						tree.updateUI();
 					}
 				});
-				cateInfo.setVisible(false);
 			}
 		});
 		panel.add(addParentButton);
@@ -146,7 +145,6 @@ public class EditGradingCriteria extends JFrame {
 						tree.updateUI();
 					}
 				});
-				cateInfo.setVisible(false);
 			}
 		});
 		panel.add(addChildButton);
@@ -196,7 +194,6 @@ public class EditGradingCriteria extends JFrame {
 						tree.updateUI();
 					}
 				});
-				cateInfo.setVisible(false);
 			}
 		});
 		panel.add(editButton);
