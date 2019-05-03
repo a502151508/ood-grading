@@ -150,7 +150,7 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				String firstName = model.getValueAt(modelRow, 1).toString();
 				String lastName = model.getValueAt(modelRow, 2).toString();
 
-				Student rem = new Student(0, 2, firstName, lastName, 1, BUID);
+				Student rem = new Student(Integer.parseInt(BUID), 2, firstName, lastName, 1, " ");
 
 				StudentService ss = new StudentServiceImpl();
 				ss.deleteStudent(rem);
