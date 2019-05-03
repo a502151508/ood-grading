@@ -192,15 +192,10 @@ public class EditGradingCriteria extends JFrame {
 								.getLastSelectedPathComponent();
 						String oldString = selectedNode.getUserObject().toString();
 						String newString = name + "/" + percent + "%";
-						if(taskNameIdMap.containsKey(oldString)) {
-							if(newOldNameMap.containsKey(oldString)) {
-								String taskNameToBeEdited = newOldNameMap.get(oldString);
-								newOldNameMap.remove(oldString);
-								newOldNameMap.put(newString, taskNameToBeEdited);
-							}
-							else {
+						if(((LoadJTreePanel) treePanel).getTaskByString(oldString) != 0) {
+
 								newOldNameMap.put(newString, oldString);
-							}
+							
 						}
 					
 						
@@ -244,14 +239,16 @@ public class EditGradingCriteria extends JFrame {
 							ts.editTask(task);
 						}
 						else {
-							
-							String[] arrayOfTask = taskString.split("/");
-							String taskName = arrayOfTask[0];
-							String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
-							//totalTaskPerce.add(Double.valueOf(taskPerce));
-							Task task = new Task(0, classId, taskName, Double.valueOf(taskPerce));
-							int taskId = ts.addTask(task);
-							taskNameIdMap.put(taskString, taskId);
+							if( (((LoadJTreePanel) treePanel).getTaskByString(taskString)) == 0){
+								String[] arrayOfTask = taskString.split("/");
+								String taskName = arrayOfTask[0];
+								String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
+								//totalTaskPerce.add(Double.valueOf(taskPerce));
+								Task task = new Task(0, classId, taskName, Double.valueOf(taskPerce));
+								int taskId = ts.addTask(task);
+								taskNameIdMap.put(taskString, taskId);
+							}
+
 						}
 					}
 					subTaskNameIdMap = ((LoadJTreePanel) treePanel).getSubTaskIdMap();
@@ -280,13 +277,16 @@ public class EditGradingCriteria extends JFrame {
 								ts.editSubTask(subTask);
 							}
 							else {
-								String[] arryOfSubTask = subTaskString.split("/");
-								String subTaskName = arryOfSubTask[0];
-								String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
-								//totalSubTaskPerce.add(Double.valueOf(subTaskPerce));
-								//System.out.println("The double perce is " + subTaskPerce);
-								SubTask subTask = new SubTask(0, subTaskName, taskId, Double.valueOf(subTaskPerce));
-								ts.addSubTask(subTask);
+								if( (((LoadJTreePanel) treePanel).getSubTaskByString(taskString)) == 0) {
+									String[] arryOfSubTask = subTaskString.split("/");
+									String subTaskName = arryOfSubTask[0];
+									String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
+									//totalSubTaskPerce.add(Double.valueOf(subTaskPerce));
+									//System.out.println("The double perce is " + subTaskPerce);
+									SubTask subTask = new SubTask(0, subTaskName, taskId, Double.valueOf(subTaskPerce));
+									ts.addSubTask(subTask);
+								}
+
 								//	subTaskToBeAdded.add(subTask);
 							}
 						}
