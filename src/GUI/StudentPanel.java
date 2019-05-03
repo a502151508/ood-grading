@@ -16,7 +16,7 @@ import service.StudentService;
 import service.impl.StudentServiceImpl;
 import entity.Student;
 
-public class StudentPanel extends JFrame implements ActionListener, DocumentListener{
+public class StudentPanel extends JFrame implements ActionListener, DocumentListener {
 
 	JScrollPane scrollPane;
 	JTable studentTable;
@@ -30,7 +30,7 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 	String BUID = "";
 	JButton switchClassButton, switchGradeButton;
 	JTextField searchField;
-	
+
 	StudentService ss = new StudentServiceImpl();
 	private int classID;
 
@@ -88,8 +88,8 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 		buttonsPanel.add(switchClassButton);
 		buttonsPanel.add(switchGradeButton);
 
-		studentTable
-				.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Id", "First Name", "Last Name","BU ID" }));
+		studentTable.setModel(
+				new DefaultTableModel(new Object[][] {}, new String[] { "Id", "First Name", "Last Name", "BU ID" }));
 		scrollPane.setViewportView(studentTable);
 		getContentPane().setLayout(new BorderLayout());
 		GroupLayout layout = new GroupLayout(scrollPanel);
@@ -171,19 +171,19 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 			firstNameTxt = new JTextField("Enter First Name");
 			lastNameTxt = new JTextField("Enter Last Name");
 			BUIDTxt = new JTextField("Enter BUID");
-			
+
 			firstNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					firstNameTxt.setText("");
 				}
 			});
-			
+
 			lastNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					lastNameTxt.setText("");
 				}
 			});
-			
+
 			BUIDTxt.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					BUIDTxt.setText("");
@@ -212,19 +212,19 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				firstNameTxt.setText("Enter First Name");
 				lastNameTxt.setText("Enter Last Name");
 				BUIDTxt.setText("Enter BUID");
-				
+
 				firstNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
 					public void mouseClicked(java.awt.event.MouseEvent e) {
 						firstNameTxt.setText("");
 					}
 				});
-				
+
 				lastNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
 					public void mouseClicked(java.awt.event.MouseEvent e) {
 						lastNameTxt.setText("");
 					}
 				});
-				
+
 				BUIDTxt.addMouseListener(new java.awt.event.MouseAdapter() {
 					public void mouseClicked(java.awt.event.MouseEvent e) {
 						BUIDTxt.setText("");
@@ -233,7 +233,6 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
 				if (!firstName.isEmpty() && !lastName.isEmpty() && !BUID.isEmpty()) {
 					Student add = new Student(0, classID, firstName, lastName, 1, BUID);
-
 
 					ss.addStudent(add);
 					populateTable(ListStudents(classID));
@@ -273,11 +272,16 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				JOptionPane.showMessageDialog(null, "Failed");
 			}
 		} else if (e.getSource() == switchGradeButton) {
-			int row = studentTable.getSelectedRow();
-			int modelRow = studentTable.convertRowIndexToModel(row);
-			DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
-			int stuId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
-			new ShowGradesOfStudentFrame(ss.getStudent(stuId));
+			try {
+				int row = studentTable.getSelectedRow();
+				int modelRow = studentTable.convertRowIndexToModel(row);
+				DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
+				int stuId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+				new ShowGradesOfStudentFrame(ss.getStudent(stuId));
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Please select a class!");
+			}
 		}
 
 	}
@@ -285,18 +289,18 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 	@Override
 	public void insertUpdate(DocumentEvent e) {
 		populateTable(ss.searchStudent(searchField.getText()));
-		
+
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
 		populateTable(ss.searchStudent(searchField.getText()));
-		
+
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
 		populateTable(ss.searchStudent(searchField.getText()));
-		
+
 	}
 }
