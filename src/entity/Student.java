@@ -88,6 +88,8 @@ public class Student implements Serializable {
 	
 	
 	public boolean equals(Student obj) {
+		if(obj==null)
+			return false;
 		if(this.getBuId().equals(obj.getBuId()) && this.getLastName().equals(obj.getLastName()) && this.getClassId()==obj.getClassId() && this.getFirstName().equals(obj.getFirstName() )){
 			return true;
 		}

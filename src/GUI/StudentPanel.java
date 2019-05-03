@@ -120,11 +120,9 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 //		JButton searchBtn = new JButton("Search");
 //		searchBtn.setBounds(179, 6, 117, 29);
 //		searchPanel.add(searchBtn, BorderLayout.EAST);
-
 		add(searchPanel, BorderLayout.NORTH);
 		add(scrollPanel, BorderLayout.CENTER);
 		add(buttonsPanel, BorderLayout.SOUTH);
-
 		pack();
 	}
 
@@ -202,9 +200,9 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				if (!firstName.isEmpty() && !lastName.isEmpty() && !BUID.isEmpty()) {
 					Student add = new Student(0, 2, firstName, lastName, 1, BUID);
 
-					model.addRow(new Object[] { BUID, firstName, lastName });
 
 					ss.addStudent(add);
+					populateTable(ListStudents(classID));
 				}
 				studentPopup.setVisible(false);
 			}
