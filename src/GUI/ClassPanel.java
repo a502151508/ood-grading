@@ -76,7 +76,7 @@ public class ClassPanel extends JFrame {
 
 		JButton loadExistedButton = new JButton("Load Existed Criterias");
 		loadExistedButton.addActionListener(new GradingCriteraLoadListener());
-		
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		buttonsPanel.add(removeClassButton);
 		buttonsPanel.add(addClassButton);
@@ -189,7 +189,59 @@ public class ClassPanel extends JFrame {
 			}
 		}
 	}
+	private class GradingCriteraLoadListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			//load existed class setting
+			//get selected row
+			int row = classTable.getSelectedRow();
+			int modelRow = classTable.convertRowIndexToModel(row);
+			DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 
+			int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+			
+		//	System.out.println("id number is " + id);
+			classCreationPopup = new JFrame();
+			JPanel classCreation = new JPanel();
+
+			classNameTxt = new JTextField("Enter Class Name");
+			classSemesterTxt = new JTextField("Enter Semester");
+
+			JButton createClassButton = new JButton("Create Class");
+			createClassButton.addActionListener(new CreateClassActionListener());
+
+			classCreation.add(classNameTxt);
+			classCreation.add(classSemesterTxt);
+			classCreation.add(createClassButton);
+			classCreation.setVisible(true);
+
+			classCreationPopup.add(classCreation);
+			classCreationPopup.setVisible(true);
+			classCreationPopup.pack();
+
+
+		}
+		private class CreateClassActionListener implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				className = classNameTxt.getText();
+				semester = classSemesterTxt.getText();
+				classNameTxt.setText("Enter Class Name");
+				classSemesterTxt.setText("Enter Semester");
+				DefaultTableModel model = (DefaultTableModel) classTable.getModel();
+				if (!className.isEmpty() && !semester.isEmpty()) {
+					Classes add = new Classes(0, className, semester);
+
+					model.addRow(new Object[] { "0", semester, className });
+
+					ClassesService classesService = new ClassesServiceImpl();
+					classesService.addClass(add);
+					populateTable();
+
+				}
+				classCreationPopup.setVisible(false);
+			}
+		}
+	}
 	public class ClassSettingsListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			try {
@@ -231,22 +283,18 @@ public class ClassPanel extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-			int row = classTable.getSelectedRow();
-			int modelRow = classTable.convertRowIndexToModel(row);
-			DefaultTableModel model = (DefaultTableModel) classTable.getModel();
+				int row = classTable.getSelectedRow();
+				int modelRow = classTable.convertRowIndexToModel(row);
+				DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 
-			int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+				int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
 
-			new gradeView(id).setVisible(true);
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
-			JOptionPane.showMessageDialog(null, "Please select a class!");
-		}
+				new gradeView(id).setVisible(true);
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+				JOptionPane.showMessageDialog(null, "Please select a class!");
+			}
 		}
 	}
-	private class GradingCriteraLoadListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			
-		}
-	}
+
 }
