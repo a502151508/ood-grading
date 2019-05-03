@@ -2,6 +2,8 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.*;
 import java.awt.*;
@@ -14,7 +16,7 @@ import service.StudentService;
 import service.impl.StudentServiceImpl;
 import entity.Student;
 
-public class StudentPanel extends JFrame implements ActionListener {
+public class StudentPanel extends JFrame implements ActionListener, DocumentListener{
 
 	JScrollPane scrollPane;
 	JTable studentTable;
@@ -28,14 +30,15 @@ public class StudentPanel extends JFrame implements ActionListener {
 	String BUID = "";
 	JButton switchClassButton, switchGradeButton;
 	JTextField searchField;
+	
 	StudentService ss = new StudentServiceImpl();
 	private int classID;
 
 	public StudentPanel(int classID) {
 		this.classID = classID;
 		initComponents();
-		populateTable();
-
+		populateTable(ListStudents(classID));
+		
 	}
 
 	public List<Student> ListStudents(int classID) {
@@ -44,18 +47,17 @@ public class StudentPanel extends JFrame implements ActionListener {
 		return list;
 	}
 
-	public void populateTable() {
+	public void populateTable(List<Student> list) {
 		DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
 		model.setRowCount(0);
-		List<Student> list = ListStudents(classID);
-		Object rowData[] = new Object[3];
+		Object rowData[] = new Object[4];
 		for (int i = 0; i < list.size(); i++) {
 			rowData[0] = list.get(i).getStuId();
 			rowData[1] = list.get(i).getFirstName();
 			rowData[2] = list.get(i).getLastName();
+			rowData[3] = list.get(i).getBuId();
 			model.addRow(rowData);
 		}
-
 	}
 
 	private void initComponents() {
@@ -88,7 +90,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 		buttonsPanel.add(switchGradeButton);
 
 		studentTable
-				.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Id", "First Name", "Last Name" }));
+				.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Id", "First Name", "Last Name","BU ID" }));
 		scrollPane.setViewportView(studentTable);
 		getContentPane().setLayout(new BorderLayout());
 		GroupLayout layout = new GroupLayout(scrollPanel);
@@ -108,8 +110,13 @@ public class StudentPanel extends JFrame implements ActionListener {
 		searchField.setText("Enter Name/ID");
 		searchField.setBounds(6, 6, 180, 20);
 		searchField.setColumns(10);
+		searchField.getDocument().addDocumentListener(this);
 		searchPanel.add(searchField, BorderLayout.WEST);
-
+		searchField.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				searchField.setText("");
+			}
+		});
 		JButton searchBtn = new JButton("Search");
 		searchBtn.setBounds(179, 6, 117, 29);
 		searchPanel.add(searchBtn, BorderLayout.EAST);
@@ -229,7 +236,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 			String s = f.getAbsolutePath();// 返回路径名
 			if (ss.LoadStudentFromCsv(s, classID)) {
 				JOptionPane.showMessageDialog(null, "Load Successfull");
-				populateTable();
+				populateTable(ListStudents(classID));
 			} else {
 				JOptionPane.showMessageDialog(null, "Failed");
 			}
@@ -241,5 +248,23 @@ public class StudentPanel extends JFrame implements ActionListener {
 			new ShowGradesOfStudentFrame(ss.getStudent(stuId));
 		}
 
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		populateTable(ss.searchStudent(searchField.getText()));
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		populateTable(ss.searchStudent(searchField.getText()));
+		
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		populateTable(ss.searchStudent(searchField.getText()));
+		
 	}
 }
