@@ -65,6 +65,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 				return false;
 			}
 		};
+		JPanel searchPanel = new JPanel();
 		JPanel buttonsPanel = new JPanel();
 		JPanel scrollPanel = new JPanel();
 
@@ -101,7 +102,20 @@ public class StudentPanel extends JFrame implements ActionListener {
 						.createSequentialGroup().addContainerGap().addComponent(scrollPane, GroupLayout.PREFERRED_SIZE,
 								GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(14, Short.MAX_VALUE)));
-		add(scrollPanel, BorderLayout.NORTH);
+		
+		JTextField searchField = new JTextField();
+		searchField.setHorizontalAlignment(SwingConstants.CENTER);
+		searchField.setText("Enter Name/ID");
+		searchField.setBounds(6, 6, 180, 20);
+		searchField.setColumns(10);
+		searchPanel.add(searchField, BorderLayout.WEST);
+		
+		JButton searchBtn = new JButton("Search");
+		searchBtn.setBounds(179, 6, 117, 29);
+		searchPanel.add(searchBtn, BorderLayout.EAST);
+		
+		add(searchPanel, BorderLayout.NORTH);
+		add(scrollPanel, BorderLayout.CENTER);
 		add(buttonsPanel, BorderLayout.SOUTH);
 
 		pack();

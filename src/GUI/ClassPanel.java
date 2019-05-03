@@ -57,6 +57,7 @@ public class ClassPanel extends JFrame {
 		};
 
 		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new GridLayout(6, 1));
 		JPanel scrollView = new JPanel();
 
 		JButton removeClassButton = new JButton("Remove Class");
