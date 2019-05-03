@@ -77,7 +77,6 @@ public class LoadJTreePanel extends JPanel {
 					level1.add(level2);
 				}
 			}
-
 		}
 		TreePath tp = new TreePath(dtm.getPathToRoot(root.getFirstChild()));
 		tree.setSelectionPath(tp);
