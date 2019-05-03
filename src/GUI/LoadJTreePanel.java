@@ -33,8 +33,8 @@ public class LoadJTreePanel extends JPanel {
 	TaskService ts = new TaskServiceImpl();
 	DefaultMutableTreeNode root;
 	TreePath movePath;
-	Map<DefaultMutableTreeNode, Integer> taskIdMap;
-	Map<DefaultMutableTreeNode, Integer> subTaskIdMap;
+	Map<String, Integer> taskIdMap;
+	Map<String, Integer> subTaskIdMap;
 	DefaultMutableTreeNode assignment = new DefaultMutableTreeNode("Assignments/50%");
 	DefaultMutableTreeNode exam = new DefaultMutableTreeNode("Exams/50%");
 
@@ -68,12 +68,12 @@ public class LoadJTreePanel extends JPanel {
 			for (TaskDto td : tl) {
 				DefaultMutableTreeNode level1 = new DefaultMutableTreeNode(
 						td.getTaskName() + "/" + td.getWeight() + "%");
-				taskIdMap.put(level1, td.getTaskId());
+				taskIdMap.put(td.getTaskName() + "/" + td.getWeight() + "%", td.getTaskId());
 				root.add(level1);
 				for (SubTask st : td.getSubTaskList()) {
 					DefaultMutableTreeNode level2 = new DefaultMutableTreeNode(
 							st.getSubTaskName() + "/" + st.getWeight() + "%");
-					subTaskIdMap.put(level2, st.getSubTaskId());
+					subTaskIdMap.put(st.getSubTaskName() + "/" + st.getWeight() + "%", st.getSubTaskId());
 					level1.add(level2);
 				}
 			}
@@ -117,19 +117,19 @@ public class LoadJTreePanel extends JPanel {
 		return (this.tree);
 	}
 
-	public Map<DefaultMutableTreeNode, Integer> getTaskIdMap() {
+	public Map<String, Integer> getTaskIdMap() {
 		return taskIdMap;
 	}
 
-	public void setTaskIdMap(Map<DefaultMutableTreeNode, Integer> taskIdMap) {
+	public void setTaskIdMap(Map<String, Integer> taskIdMap) {
 		this.taskIdMap = taskIdMap;
 	}
 
-	public Map<DefaultMutableTreeNode, Integer> getSubTaskIdMap() {
+	public Map<String, Integer> getSubTaskIdMap() {
 		return subTaskIdMap;
 	}
 
-	public void setSubTaskIdMap(Map<DefaultMutableTreeNode, Integer> subTaskIdMap) {
+	public void setSubTaskIdMap(Map<String, Integer> subTaskIdMap) {
 		this.subTaskIdMap = subTaskIdMap;
 	}
 
