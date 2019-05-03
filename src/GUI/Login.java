@@ -18,9 +18,13 @@ public class Login {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel = new JPanel();
 		JLabel lblPassword = new JLabel("Instructor Code:");
+		lblPassword.setBounds(100, 93, 102, 16);
 		txtPassword = new JPasswordField(20);
+		txtPassword.setBounds(24, 121, 250, 26);
 		JButton btnLogin = new JButton("Login");
+		btnLogin.setBounds(107, 154, 79, 29);
 		btnLogin.addActionListener(new LoginListener());
+		panel.setLayout(null);
 
 		panel.add(lblPassword);
 		panel.add(txtPassword);
