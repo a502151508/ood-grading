@@ -143,15 +143,14 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				int modelRow = studentTable.convertRowIndexToModel(row);
 				DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
 
-				int BUID = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+				String BUID = model.getValueAt(modelRow, 0).toString();
 				String firstName = model.getValueAt(modelRow, 1).toString();
 				String lastName = model.getValueAt(modelRow, 2).toString();
 
-				Student rem = new Student(BUID, 2, firstName, lastName, 1, "U" + BUID);
+				Student rem = new Student(0, 2, firstName, lastName, 1, BUID);
 
 				StudentService ss = new StudentServiceImpl();
 				ss.deleteStudent(rem);
-
 				model.removeRow(modelRow);
 
 			} catch (Exception ex) {
@@ -234,7 +233,7 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				});
 				DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
 				if (!firstName.isEmpty() && !lastName.isEmpty() && !BUID.isEmpty()) {
-					Student add = new Student(0, 2, firstName, lastName, 1, BUID);
+					Student add = new Student(0, classID, firstName, lastName, 1, BUID);
 
 
 					ss.addStudent(add);
