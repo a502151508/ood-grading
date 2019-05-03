@@ -44,7 +44,9 @@ public class EditGradingCriteria extends JFrame {
 	TaskService ts = new TaskServiceImpl();
 	Map<String, Integer> taskNameIdMap = new HashMap<>();
 	Map<String, Integer> subTaskNameIdMap = new HashMap<>();
-
+	Map<String, String> newOldNameMap = new HashMap<>();
+	
+	
 	DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");
 	DefaultMutableTreeNode assignment = new DefaultMutableTreeNode("Assignments/50%");
 	DefaultMutableTreeNode exam = new DefaultMutableTreeNode("Exams/50%");
@@ -181,11 +183,30 @@ public class EditGradingCriteria extends JFrame {
 				JButton save = cateInfo.btnSave;
 				save.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						
+						//newOldNameMap = new HashMap<>();
+						
 						String name = cateInfo.getTaskName();
 						String percent = cateInfo.getTaskPercent();
 						DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
 								.getLastSelectedPathComponent();
-						selectedNode.setUserObject(name + "/" + percent + "%");
+						String oldString = selectedNode.getUserObject().toString();
+						String newString = name + "/" + percent + "%";
+						if(taskNameIdMap.containsKey(oldString)) {
+							if(newOldNameMap.containsKey(oldString)) {
+								String taskNameToBeEdited = newOldNameMap.get(oldString);
+								newOldNameMap.remove(oldString);
+								newOldNameMap.put(newString, taskNameToBeEdited);
+							}
+							else {
+								newOldNameMap.put(newString, oldString);
+							}
+						}
+					
+						
+						selectedNode.setUserObject(newString);
+						
+						
 						TreeNode[] nodes = model.getPathToRoot(selectedNode);
 						TreePath path = new TreePath(nodes);
 						tree.scrollPathToVisible(path);
@@ -213,8 +234,9 @@ public class EditGradingCriteria extends JFrame {
 						String taskString =  ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
 						System.out.println("Task String is " + taskString);
 						System.out.println(taskNameIdMap);
-						if(taskNameIdMap.containsKey(taskString)) {
-							int taskId = taskNameIdMap.get(taskString);
+						if(newOldNameMap.containsKey(taskString)) {
+							String oldTaskName = newOldNameMap.get(taskString);
+							int taskId = taskNameIdMap.get(oldTaskName);
 							String[] arrayOfTask = taskString.split("/");
 							String taskName = arrayOfTask[0];
 							String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
@@ -246,8 +268,9 @@ public class EditGradingCriteria extends JFrame {
 							DefaultMutableTreeNode subTaskNode = (DefaultMutableTreeNode) taskNode.getChildAt(j);
 							Object obj = subTaskNode.getUserObject();
 							String subTaskString = obj.toString();
-							if(subTaskNameIdMap.containsKey(subTaskString)) {
-								int subTaskId = subTaskNameIdMap.get(subTaskString);
+							if(newOldNameMap.containsKey(subTaskString)) {
+								String oldName = newOldNameMap.get(subTaskString);
+								int subTaskId = subTaskNameIdMap.get(oldName);
 								String[] arryOfSubTask = subTaskString.split("/");
 								String subTaskName = arryOfSubTask[0];
 								String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
@@ -269,7 +292,7 @@ public class EditGradingCriteria extends JFrame {
 						}
 					}
 				}
-
+				newOldNameMap = new HashMap<>();
 				((LoadJTreePanel) treePanel).init();
 				//this.tree = ((LoadJTreePanel) treePanel).getTree();
 			//	this.getContentPane().add(treePanel, BorderLayout.EAST);
