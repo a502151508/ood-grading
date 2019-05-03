@@ -31,7 +31,7 @@ public class LoadJTreePanel extends JPanel {
 	JTree tree;
 	DefaultTreeModel model;
 	TaskService ts = new TaskServiceImpl();
-	DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");
+	DefaultMutableTreeNode root;
 	TreePath movePath;
 	Map<DefaultMutableTreeNode, Integer> taskIdMap;
 	Map<DefaultMutableTreeNode, Integer> subTaskIdMap;
@@ -51,6 +51,7 @@ public class LoadJTreePanel extends JPanel {
 	}
 
 	public void init() {
+		root = new DefaultMutableTreeNode("Grading Criteria");
 		setPreferredSize(new Dimension(300, 300));
 		taskIdMap = new HashMap<>();
 		subTaskIdMap = new HashMap<>();

@@ -200,127 +200,82 @@ public class EditGradingCriteria extends JFrame {
 
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				List<Double> totalTaskPerce = new ArrayList<>();
-				List<Double> totalSubTaskPerce = new ArrayList<>();
-				List<TreeNode> taskNodeToBeAdded = new ArrayList<>();
-				List<Task> taskToBeEdited = new ArrayList<>();
-				List<Task> taskToBeAdded = new ArrayList<>();
-				List<SubTask> subTaskToBeEdited = new ArrayList<>();
-				List<SubTask> subTaskToBeAdded = new ArrayList<>();
-				
-				boolean correctSub = true;
+					
 				
 				// add task to db
 				root = (DefaultMutableTreeNode) tree.getModel().getRoot();
-				taskNodeIdMap = ((LoadJTreePanel) treePanel).getTaskIdMap(); 
-				int numOfTask = root.getChildCount();
-				for (int i = 0; i < numOfTask; i++) {
-					TreeNode taskNode = root.getChildAt(i);
-					if(taskNodeIdMap.containsKey(taskNode)) {
-						int taskId = taskNodeIdMap.get(taskNode);
-						String taskString =  ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
-						String[] arrayOfTask = taskString.split("/");
-						String taskName = arrayOfTask[0];
-						String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
-						totalTaskPerce.add(Double.valueOf(taskPerce));
-						Task task = new Task(taskId, 2, taskName, Double.valueOf(taskPerce));
-						//ts.editTask(task);
-						taskToBeEdited.add(task);
-					}
-					else {
-						String taskString = ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
-						String[] arrayOfTask = taskString.split("/");
-						String taskName = arrayOfTask[0];
-						String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
-						totalTaskPerce.add(Double.valueOf(taskPerce));
-						Task task = new Task(0, 2, taskName, Double.valueOf(taskPerce));
-						taskToBeAdded.add(task);
-						taskNodeToBeAdded.add(taskNode);
-//						System.out.println(task.toString());
-						//int taskId = ts.addTask(task);
-						//taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
-					}
-				}
+				if(!inputValidation(root)) {
 
-				if(!inputValidation(totalTaskPerce)  ) {
-					JOptionPane.showMessageDialog(null,"total Task percentage must be equal to 100");
 				}
 				else {
-					for(Task t: taskToBeEdited) {
-						ts.editTask(t);
-					}
-					for(int i = 0; i < taskToBeAdded.size(); i++) {
-						Task t = taskToBeAdded.get(i);
-						DefaultMutableTreeNode taskNode = (DefaultMutableTreeNode) taskNodeToBeAdded.get(i);
-						int taskId = ts.addTask(t);
-						taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
-					}
-				}
-				
-				
-				
-				
-				
-				subTaskNodeIdMap = ((LoadJTreePanel) treePanel).getSubTaskIdMap();
-				for (int i = 0; i < numOfTask; i++) {
-					DefaultMutableTreeNode taskNode = (DefaultMutableTreeNode)root.getChildAt(i);		
-					totalSubTaskPerce = new ArrayList<>();
-					subTaskToBeEdited = new ArrayList<>();
-					subTaskToBeAdded = new ArrayList<>();
-					
-					
-					String taskString =  ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
-					String[] arrayOfTask = taskString.split("/");
-					
-					String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
-					Double target = Double.valueOf(taskPerce);
-					
-					
-					int taskId = taskNodeIdMap.get(taskNode);
-					int numOfSubTask = taskNode.getChildCount();
-					for (int j = 0; j < numOfSubTask; j++) {
-						DefaultMutableTreeNode subTaskNode = (DefaultMutableTreeNode) taskNode.getChildAt(j);
-
-						if(subTaskNodeIdMap.containsKey(subTaskNode)) {
-							int subTaskId = subTaskNodeIdMap.get(subTaskNode);
-							Object obj = subTaskNode.getUserObject();
-							String subTaskString = obj.toString();
-							String[] arryOfSubTask = subTaskString.split("/");
-							String subTaskName = arryOfSubTask[0];
-							String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
-							totalSubTaskPerce.add(Double.valueOf(subTaskPerce));
-							SubTask subTask = new SubTask(subTaskId, subTaskName, taskId, Double.valueOf(subTaskPerce));
-							subTaskToBeEdited.add(subTask);
-							//ts.editSubTask(subTask);
+					taskNodeIdMap = ((LoadJTreePanel) treePanel).getTaskIdMap(); 
+					int numOfTask = root.getChildCount();
+					for (int i = 0; i < numOfTask; i++) {
+						TreeNode taskNode = root.getChildAt(i);
+						if(taskNodeIdMap.containsKey(taskNode)) {
+							int taskId = taskNodeIdMap.get(taskNode);
+							String taskString =  ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
+							String[] arrayOfTask = taskString.split("/");
+							String taskName = arrayOfTask[0];
+							String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
+							Task task = new Task(taskId, classId, taskName, Double.valueOf(taskPerce));
+							ts.editTask(task);
 						}
 						else {
-							Object obj = subTaskNode.getUserObject();
-							String subTaskString = obj.toString();
-							String[] arryOfSubTask = subTaskString.split("/");
-							String subTaskName = arryOfSubTask[0];
-							String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
-							totalSubTaskPerce.add(Double.valueOf(subTaskPerce));
-							//System.out.println("The double perce is " + subTaskPerce);
-							SubTask subTask = new SubTask(0, subTaskName, taskId, Double.valueOf(subTaskPerce));
-							//ts.addSubTask(subTask);
-							subTaskToBeAdded.add(subTask);
+							String taskString = ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
+							String[] arrayOfTask = taskString.split("/");
+							String taskName = arrayOfTask[0];
+							String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
+							//totalTaskPerce.add(Double.valueOf(taskPerce));
+							Task task = new Task(0, classId, taskName, Double.valueOf(taskPerce));
+							int taskId = ts.addTask(task);
+							taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
 						}
 					}
-					
-					if(!inputValidation(totalSubTaskPerce,target)) {
-						JOptionPane.showMessageDialog(null,"total subTask percentage must be equal to " + target);
-					//	correctSub = false; 
-					}else {
-						for(SubTask sbt : subTaskToBeEdited) {
-							ts.editSubTask(sbt);
-						}
-						for(SubTask sbt: subTaskToBeAdded) {
-							ts.addSubTask(sbt);
+					subTaskNodeIdMap = ((LoadJTreePanel) treePanel).getSubTaskIdMap();
+					for (int i = 0; i < numOfTask; i++) {
+						DefaultMutableTreeNode taskNode = (DefaultMutableTreeNode)root.getChildAt(i);							
+						String taskString =  ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
+						String[] arrayOfTask = taskString.split("/");					
+						String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
+						Double target = Double.valueOf(taskPerce);	
+
+						int taskId = taskNodeIdMap.get(taskNode);
+						int numOfSubTask = taskNode.getChildCount();
+						for (int j = 0; j < numOfSubTask; j++) {
+							DefaultMutableTreeNode subTaskNode = (DefaultMutableTreeNode) taskNode.getChildAt(j);
+
+							if(subTaskNodeIdMap.containsKey(subTaskNode)) {
+								int subTaskId = subTaskNodeIdMap.get(subTaskNode);
+								Object obj = subTaskNode.getUserObject();
+								String subTaskString = obj.toString();
+								String[] arryOfSubTask = subTaskString.split("/");
+								String subTaskName = arryOfSubTask[0];
+								String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
+								//totalSubTaskPerce.add(Double.valueOf(subTaskPerce));
+								SubTask subTask = new SubTask(subTaskId, subTaskName, taskId, Double.valueOf(subTaskPerce));
+								//subTaskToBeEdited.add(subTask);
+								ts.editSubTask(subTask);
+							}
+							else {
+								Object obj = subTaskNode.getUserObject();
+								String subTaskString = obj.toString();
+								String[] arryOfSubTask = subTaskString.split("/");
+								String subTaskName = arryOfSubTask[0];
+								String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
+								//totalSubTaskPerce.add(Double.valueOf(subTaskPerce));
+								//System.out.println("The double perce is " + subTaskPerce);
+								SubTask subTask = new SubTask(0, subTaskName, taskId, Double.valueOf(subTaskPerce));
+								ts.addSubTask(subTask);
+								//	subTaskToBeAdded.add(subTask);
+							}
 						}
 					}
 				}
-			//	System.out.println("correctSub is " + correctSub);
-			
+
+				((LoadJTreePanel) treePanel).init();
+				//this.tree = ((LoadJTreePanel) treePanel).getTree();
+			//	this.getContentPane().add(treePanel, BorderLayout.EAST);
 				//gradeView.setTableContent();
 			}
 		});
@@ -332,32 +287,53 @@ public class EditGradingCriteria extends JFrame {
 		this.setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
-	protected boolean inputValidation(List<Double> list) {
-		double total = 0;
-		for(double d : list) {
-			total += d;
+	protected boolean inputValidation(DefaultMutableTreeNode root) {
+		int numOfTask = root.getChildCount();
+		double totalTaskWeight = 0;
+		for(int i = 0; i < numOfTask; i++) {
+			TreeNode taskNode = root.getChildAt(i);
+			String taskString =  ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
+			String[] arrayOfTask = taskString.split("/");
+			String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
+			double weight = Double.valueOf(taskPerce);
+			totalTaskWeight += weight;
 		}
-		if(total != 100) {
+		if(totalTaskWeight != 100) {
+			JOptionPane.showMessageDialog(null,"total task weight must be equal to 100");
 			return false;
 		}
-		else {
-			return true;
+		
+		//subnode
+		for(int i = 0; i < numOfTask; i++) {
+			DefaultMutableTreeNode taskNode = (DefaultMutableTreeNode)root.getChildAt(i);
+			String taskString =  ((DefaultMutableTreeNode) taskNode).getUserObject().toString();
+			String[] arrayOfTask = taskString.split("/");					
+			String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
+			Double taskWeight = Double.valueOf(taskPerce);
+			int numOfSubTask = taskNode.getChildCount();
+			double totalSubWeight = 0;
+			for (int j = 0; j < numOfSubTask; j++) {
+				
+				DefaultMutableTreeNode subTaskNode = (DefaultMutableTreeNode) taskNode.getChildAt(j);
+				Object obj = subTaskNode.getUserObject();
+				String subTaskString = obj.toString();
+				String[] arryOfSubTask = subTaskString.split("/");
+				String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
+				Double weight = Double.valueOf(subTaskPerce);
+				totalSubWeight += weight;
+			}
+			System.out.println("totalsubweight is " + totalSubWeight);
+			if(totalSubWeight != taskWeight) {
+				JOptionPane.showMessageDialog(null,"total task weight must be equal to " + taskWeight);
+				return false;
+			}
 		}
+		
+		return true;
 		
 	}
 	
-	protected boolean inputValidation(List<Double>list , double target) {
-		double total = 0;
-		for(double d : list) {
-			total += d;
-		}
-		if(total != target) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
+
 
 	public int getClassId() {
 		return classId;
