@@ -39,26 +39,26 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public boolean addStudent(Student s) {
-		if(!checkIfExist(s)) {
+		if (!checkIfExist(s)) {
 			String sql = "INSERT INTO student (last_name, first_name, class_id, stu_type,bu_id)  VALUES (?, ?, ? ,?,?);";
 			Object[] params = { s.getLastName(), s.getFirstName(), s.getClassId(), s.getStuType(), s.getBuId() };
 			return sd.insert(sql, params);
-		}
-		else {
-			System.out.println("Student:"+s.getBuId()+" already exists");
+		} else {
+			System.out.println("Student:" + s.getBuId() + " already exists");
 			return false;
 		}
-		
+
 	}
+
 	boolean checkIfExist(Student s) {
-		Object[] params = {s.getBuId()};
+		Object[] params = { s.getBuId() };
 		return s.equals(sd.getStudent("select * from student where bu_id = ?", params));
 	}
 
 	@Override
 	public boolean LoadStudentFromCsv(String filepath, int classId) {
 		try {
-			CsvUtil.LoadCsv(filepath, classId);	
+			CsvUtil.LoadCsv(filepath, classId);
 		} catch (Exception e) {
 			return false;
 		}
@@ -67,8 +67,8 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<Student> searchStudent(String queryString) {
-		queryString = "%"+queryString+"%";
-		Object[] params = {queryString};
-		return sd.getStudentList("select * from student s where s.bu_id||s.last_name||s.first_name like ?",params);
+		queryString = "%" + queryString + "%";
+		Object[] params = { queryString };
+		return sd.getStudentList("select * from student s where s.bu_id||s.last_name||s.first_name like ?", params);
 	}
 }

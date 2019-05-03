@@ -158,6 +158,18 @@ public class ClassPanel extends JFrame {
 
 			classNameTxt = new JTextField("Enter Class Name");
 			classSemesterTxt = new JTextField("Enter Semester");
+			
+			classNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					classNameTxt.setText("");
+				}
+			});
+			
+			classSemesterTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					classSemesterTxt.setText("");
+				}
+			});
 
 			JButton createClassButton = new JButton("Create Class");
 			createClassButton.addActionListener(new CreateClassActionListener());
@@ -184,6 +196,19 @@ public class ClassPanel extends JFrame {
 				semester = classSemesterTxt.getText();
 				classNameTxt.setText("Enter Class Name");
 				classSemesterTxt.setText("Enter Semester");
+				
+				classNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						classNameTxt.setText("");
+					}
+				});
+				
+				classSemesterTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						classSemesterTxt.setText("");
+					}
+				});
+				
 				DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 				if (!className.isEmpty() && !semester.isEmpty()) {
 					Classes add = new Classes(0, className, semester);
@@ -217,6 +242,18 @@ public class ClassPanel extends JFrame {
 
 			classNameTxt = new JTextField("Enter Class Name");
 			classSemesterTxt = new JTextField("Enter Semester");
+			
+			classNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					classNameTxt.setText("");
+				}
+			});
+			
+			classSemesterTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					classSemesterTxt.setText("");
+				}
+			});
 
 			JButton createClassButton = new JButton("Create Class");
 			CreateClassActionListener cl = new CreateClassActionListener(classId);
@@ -252,6 +289,18 @@ public class ClassPanel extends JFrame {
 				semester = classSemesterTxt.getText();
 				classNameTxt.setText("Enter Class Name");
 				classSemesterTxt.setText("Enter Semester");
+				
+				classNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						classNameTxt.setText("");
+					}
+				});
+				
+				classSemesterTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						classSemesterTxt.setText("");
+					}
+				});
 				DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 				if (!className.isEmpty() && !semester.isEmpty()) {
 					Classes add = new Classes(0, className, semester);

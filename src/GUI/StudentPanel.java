@@ -38,7 +38,6 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 		this.classID = classID;
 		initComponents();
 		populateTable(ListStudents(classID));
-		
 	}
 
 	public List<Student> ListStudents(int classID) {
@@ -120,11 +119,9 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 //		JButton searchBtn = new JButton("Search");
 //		searchBtn.setBounds(179, 6, 117, 29);
 //		searchPanel.add(searchBtn, BorderLayout.EAST);
-
 		add(searchPanel, BorderLayout.NORTH);
 		add(scrollPanel, BorderLayout.CENTER);
 		add(buttonsPanel, BorderLayout.SOUTH);
-
 		pack();
 	}
 
@@ -145,20 +142,19 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				int modelRow = studentTable.convertRowIndexToModel(row);
 				DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
 
-				int BUID = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+				String BUID = model.getValueAt(modelRow, 0).toString();
 				String firstName = model.getValueAt(modelRow, 1).toString();
 				String lastName = model.getValueAt(modelRow, 2).toString();
 
-				Student rem = new Student(BUID, 2, firstName, lastName, 1, "U" + BUID);
+				Student rem = new Student(0, 2, firstName, lastName, 1, BUID);
 
 				StudentService ss = new StudentServiceImpl();
 				ss.deleteStudent(rem);
-
 				model.removeRow(modelRow);
 
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
-				JOptionPane.showMessageDialog(null, "Please select a class!");
+				JOptionPane.showMessageDialog(null, "Please select a student!");
 			}
 		}
 	}
@@ -175,6 +171,24 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 			firstNameTxt = new JTextField("Enter First Name");
 			lastNameTxt = new JTextField("Enter Last Name");
 			BUIDTxt = new JTextField("Enter BUID");
+			
+			firstNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					firstNameTxt.setText("");
+				}
+			});
+			
+			lastNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					lastNameTxt.setText("");
+				}
+			});
+			
+			BUIDTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					BUIDTxt.setText("");
+				}
+			});
 
 			studentCreation.add(firstNameTxt);
 			studentCreation.add(lastNameTxt);
@@ -198,13 +212,31 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				firstNameTxt.setText("Enter First Name");
 				lastNameTxt.setText("Enter Last Name");
 				BUIDTxt.setText("Enter BUID");
+				
+				firstNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						firstNameTxt.setText("");
+					}
+				});
+				
+				lastNameTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						lastNameTxt.setText("");
+					}
+				});
+				
+				BUIDTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+					public void mouseClicked(java.awt.event.MouseEvent e) {
+						BUIDTxt.setText("");
+					}
+				});
 				DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
 				if (!firstName.isEmpty() && !lastName.isEmpty() && !BUID.isEmpty()) {
-					Student add = new Student(0, 2, firstName, lastName, 1, BUID);
+					Student add = new Student(0, classID, firstName, lastName, 1, BUID);
 
-					model.addRow(new Object[] { BUID, firstName, lastName });
 
 					ss.addStudent(add);
+					populateTable(ListStudents(classID));
 				}
 				studentPopup.setVisible(false);
 			}

@@ -330,6 +330,7 @@ public class EditGradingCriteria extends JFrame {
 		this.pack();
 		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	protected boolean inputValidation(List<Double> list) {
 		double total = 0;
@@ -366,7 +367,7 @@ public class EditGradingCriteria extends JFrame {
 		this.classId = classId;
 	}
 
-	public static void main(String[] args) {
-		new EditGradingCriteria(2).init();
-	}
+	//public static void main(String[] args) {
+	//	new EditGradingCriteria(2).init();
+	//}
 }
