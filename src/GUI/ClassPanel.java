@@ -198,7 +198,7 @@ public class ClassPanel extends JFrame {
 			int modelRow = classTable.convertRowIndexToModel(row);
 			DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 
-			int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+			int classId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
 			
 		//	System.out.println("id number is " + id);
 			classCreationPopup = new JFrame();

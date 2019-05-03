@@ -208,7 +208,7 @@ public class EditGradingCriteria extends JFrame {
 				List<SubTask> subTaskToBeEdited = new ArrayList<>();
 				List<SubTask> subTaskToBeAdded = new ArrayList<>();
 				
-				
+				boolean correctSub = true;
 				
 				// add task to db
 				root = (DefaultMutableTreeNode) tree.getModel().getRoot();
@@ -241,20 +241,7 @@ public class EditGradingCriteria extends JFrame {
 						//taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
 					}
 				}
-				if(!inputValidation(totalTaskPerce)) {
-					JOptionPane.showMessageDialog(null,"total Task percentage must be equal to 100");
-				}
-				else {
-					for(Task t: taskToBeEdited) {
-						ts.editTask(t);
-					}
-					for(int i = 0; i < taskToBeAdded.size(); i++) {
-						Task t = taskToBeAdded.get(i);
-						DefaultMutableTreeNode taskNode = (DefaultMutableTreeNode) taskNodeToBeAdded.get(i);
-						int taskId = ts.addTask(t);
-						taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
-					}
-				}
+
 				
 				
 				
@@ -308,6 +295,7 @@ public class EditGradingCriteria extends JFrame {
 					}
 					if(!inputValidation(totalSubTaskPerce,target)) {
 						JOptionPane.showMessageDialog(null,"total subTask percentage must be equal to " + target);
+						correctSub = false; 
 					}else {
 						for(SubTask sbt : subTaskToBeEdited) {
 							ts.editSubTask(sbt);
@@ -317,7 +305,20 @@ public class EditGradingCriteria extends JFrame {
 						}
 					}
 				}
-				
+				if(!inputValidation(totalTaskPerce) && correctSub) {
+					JOptionPane.showMessageDialog(null,"total Task percentage must be equal to 100");
+				}
+				else {
+					for(Task t: taskToBeEdited) {
+						ts.editTask(t);
+					}
+					for(int i = 0; i < taskToBeAdded.size(); i++) {
+						Task t = taskToBeAdded.get(i);
+						DefaultMutableTreeNode taskNode = (DefaultMutableTreeNode) taskNodeToBeAdded.get(i);
+						int taskId = ts.addTask(t);
+						taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
+					}
+				}
 				//gradeView.setTableContent();
 			}
 		});
