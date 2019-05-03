@@ -117,9 +117,9 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 				searchField.setText("");
 			}
 		});
-		JButton searchBtn = new JButton("Search");
-		searchBtn.setBounds(179, 6, 117, 29);
-		searchPanel.add(searchBtn, BorderLayout.EAST);
+//		JButton searchBtn = new JButton("Search");
+//		searchBtn.setBounds(179, 6, 117, 29);
+//		searchPanel.add(searchBtn, BorderLayout.EAST);
 
 		add(searchPanel, BorderLayout.NORTH);
 		add(scrollPanel, BorderLayout.CENTER);
