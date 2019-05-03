@@ -63,6 +63,12 @@ public class StudentServiceImpl implements StudentService {
 			return false;
 		}
 		return true;
-		
+	}
+
+	@Override
+	public List<Student> searchStudent(String queryString) {
+		queryString = "%"+queryString+"%";
+		Object[] params = {queryString};
+		return sd.getStudentList("select * from student s where s.bu_id||s.last_name||s.first_name like ?",params);
 	}
 }

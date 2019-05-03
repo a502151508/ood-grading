@@ -8,5 +8,5 @@ public interface ClassesService  {
 	public List<Classes> getClassesList();
 	public boolean editClass(Classes c);
 	public boolean deleteClass(Classes c);
-	public boolean addClass(Classes c);
+	public int addClass(Classes c);
 }

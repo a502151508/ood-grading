@@ -56,11 +56,23 @@ public class EditCategory extends JFrame {
 		splitPane.setLeftComponent(txtName);
 		txtName.setColumns(10);
 		
+		txtName.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				txtName.setText("");
+			}
+		});
+		
 		txtPercentage = new JTextField();
 		txtPercentage.setHorizontalAlignment(SwingConstants.CENTER);
 		txtPercentage.setText("Percentage");
 		splitPane.setRightComponent(txtPercentage);
 		txtPercentage.setColumns(10);
+		
+		txtPercentage.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				txtPercentage.setText("");
+			}
+		});
 		
 		btnSave = new JButton("Save");
 		btnSave.setBounds(288, 14, 117, 29);

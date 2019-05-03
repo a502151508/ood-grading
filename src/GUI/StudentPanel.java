@@ -27,6 +27,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 	String lastName = "Fall 2019";
 	String BUID = "";
 	JButton switchClassButton, switchGradeButton;
+	JTextField searchField;
 	StudentService ss = new StudentServiceImpl();
 	private int classID;
 
@@ -65,6 +66,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 				return false;
 			}
 		};
+		JPanel searchPanel = new JPanel();
 		JPanel buttonsPanel = new JPanel();
 		JPanel scrollPanel = new JPanel();
 
@@ -101,20 +103,32 @@ public class StudentPanel extends JFrame implements ActionListener {
 						.createSequentialGroup().addContainerGap().addComponent(scrollPane, GroupLayout.PREFERRED_SIZE,
 								GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(14, Short.MAX_VALUE)));
-		add(scrollPanel, BorderLayout.NORTH);
+		searchField = new JTextField();
+		searchField.setHorizontalAlignment(SwingConstants.CENTER);
+		searchField.setText("Enter Name/ID");
+		searchField.setBounds(6, 6, 180, 20);
+		searchField.setColumns(10);
+		searchPanel.add(searchField, BorderLayout.WEST);
+
+		JButton searchBtn = new JButton("Search");
+		searchBtn.setBounds(179, 6, 117, 29);
+		searchPanel.add(searchBtn, BorderLayout.EAST);
+
+		add(searchPanel, BorderLayout.NORTH);
+		add(scrollPanel, BorderLayout.CENTER);
 		add(buttonsPanel, BorderLayout.SOUTH);
 
 		pack();
 	}
 
-	// public static void main(String args[]) {
-	//
-	// java.awt.EventQueue.invokeLater(new Runnable() {
-	// public void run() {
-	// new StudentPanel().setVisible(true);
-	// }
-	// });
-	// }
+	public static void main(String args[]) {
+
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				new StudentPanel(2).setVisible(true);
+			}
+		});
+	}
 
 	private class RemoveStudentListener implements ActionListener {
 		@Override
@@ -192,7 +206,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==switchClassButton) {
+		if (e.getSource() == switchClassButton) {
 			JFileChooser jf = new JFileChooser();
 
 			FileFilter ff = new FileFilter() {
@@ -219,15 +233,13 @@ public class StudentPanel extends JFrame implements ActionListener {
 			} else {
 				JOptionPane.showMessageDialog(null, "Failed");
 			}
-		}
-		else if(e.getSource()==switchGradeButton) {
+		} else if (e.getSource() == switchGradeButton) {
 			int row = studentTable.getSelectedRow();
 			int modelRow = studentTable.convertRowIndexToModel(row);
 			DefaultTableModel model = (DefaultTableModel) studentTable.getModel();
 			int stuId = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
 			new ShowGradesOfStudentFrame(ss.getStudent(stuId));
 		}
-		
 
 	}
 }

@@ -30,10 +30,10 @@ public class ClassesServiceImpl implements ClassesService {
 	}
 
 	@Override
-	public boolean addClass(Classes c) {
+	public int addClass(Classes c) {
 		String sql="INSERT INTO classes (class_name, semester)  VALUES (?, ?);";
 		Object[] params = {c.getClassName(),c.getSemester()};
-		return cd.insert(sql, params);
+		return cd.addClassAndGetId(sql, params);
 	}
 
 }
