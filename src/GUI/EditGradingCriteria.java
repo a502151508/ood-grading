@@ -285,7 +285,6 @@ public class EditGradingCriteria extends JFrame {
 		this.pack();
 		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	protected boolean inputValidation(DefaultMutableTreeNode root) {
 		int numOfTask = root.getChildCount();
