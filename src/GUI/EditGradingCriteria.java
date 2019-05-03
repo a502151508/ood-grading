@@ -121,6 +121,7 @@ public class EditGradingCriteria extends JFrame {
 						TreePath path = new TreePath(nodes);
 						tree.scrollPathToVisible(path);
 						tree.updateUI();
+						cateInfo.dispose();
 					}
 				});
 			}
@@ -145,6 +146,7 @@ public class EditGradingCriteria extends JFrame {
 						TreePath path = new TreePath(nodes);
 						tree.scrollPathToVisible(path);
 						tree.updateUI();
+						cateInfo.dispose();
 					}
 				});
 			}
@@ -211,6 +213,7 @@ public class EditGradingCriteria extends JFrame {
 						TreePath path = new TreePath(nodes);
 						tree.scrollPathToVisible(path);
 						tree.updateUI();
+						cateInfo.dispose();
 					}
 				});
 			}

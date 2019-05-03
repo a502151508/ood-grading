@@ -298,19 +298,19 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		populateTable(ss.searchStudent(searchField.getText()));
+		populateTable(ss.searchStudent(searchField.getText() , classID));
 
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		populateTable(ss.searchStudent(searchField.getText()));
+		populateTable(ss.searchStudent(searchField.getText(),classID));
 
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
-		populateTable(ss.searchStudent(searchField.getText()));
+		populateTable(ss.searchStudent(searchField.getText(),classID));
 
 	}
 }

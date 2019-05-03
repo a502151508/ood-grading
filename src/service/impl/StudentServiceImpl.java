@@ -66,9 +66,9 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public List<Student> searchStudent(String queryString) {
+	public List<Student> searchStudent(String queryString,int classId) {
 		queryString = "%" + queryString + "%";
-		Object[] params = { queryString };
-		return sd.getStudentList("select * from student s where s.bu_id||s.last_name||s.first_name like ?", params);
+		Object[] params = { queryString ,classId};
+		return sd.getStudentList("select * from student s where s.bu_id||s.last_name||s.first_name like ? and class_id = ?", params);
 	}
 }

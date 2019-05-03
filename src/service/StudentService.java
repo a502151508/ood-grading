@@ -12,5 +12,5 @@ public interface StudentService {
 	public boolean deleteStudent(Student s);
 	public boolean addStudent(Student s);
 	public boolean LoadStudentFromCsv(String filepath,int classId);
-	public List<Student> searchStudent(String queryString);
+	public List<Student> searchStudent(String queryString,int classId);
 }
