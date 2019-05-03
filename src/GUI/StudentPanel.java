@@ -38,7 +38,6 @@ public class StudentPanel extends JFrame implements ActionListener, DocumentList
 		this.classID = classID;
 		initComponents();
 		populateTable(ListStudents(classID));
-		
 	}
 
 	public List<Student> ListStudents(int classID) {
