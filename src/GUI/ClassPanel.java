@@ -222,13 +222,23 @@ public class ClassPanel extends JFrame {
 	private class GradeViewActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int row = classTable.getSelectedRow();
-			int modelRow = classTable.convertRowIndexToModel(row);
-			DefaultTableModel model = (DefaultTableModel) classTable.getModel();
+			try {
+				int row = classTable.getSelectedRow();
+				int modelRow = classTable.convertRowIndexToModel(row);
+				DefaultTableModel model = (DefaultTableModel) classTable.getModel();
 
-			int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
+				int id = Integer.parseInt(model.getValueAt(modelRow, 0).toString());
 
-			new gradeView(id).setVisible(true);
+				new gradeView(id).setVisible(true);
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(null,  "Please select a class!");
+			}
+		}
+	}
+	
+	private class GradingCriteraLoadListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
 		}
 	}
 }
