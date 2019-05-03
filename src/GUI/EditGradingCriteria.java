@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class EditGradingCriteria extends JFrame {
 	TaskService ts = new TaskServiceImpl();
 	Map<DefaultMutableTreeNode, Integer> taskNodeIdMap = new HashMap<>();
 	Map<DefaultMutableTreeNode, Integer> subTaskNodeIdMap = new HashMap<>();
+
 	
 
 	DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");
@@ -183,6 +185,16 @@ public class EditGradingCriteria extends JFrame {
 
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				List<Double> totalTaskPerce = new ArrayList<>();
+				List<Double> totalSubTaskPerce = new ArrayList<>();
+				List<TreeNode> taskNodeToBeAdded = new ArrayList<>();
+				List<Task> taskToBeEdited = new ArrayList<>();
+				List<Task> taskToBeAdded = new ArrayList<>();
+				List<SubTask> subTaskToBeEdited = new ArrayList<>();
+				List<SubTask> subTaskToBeAdded = new ArrayList<>();
+				
+				
+				
 				// add task to db
 				root = (DefaultMutableTreeNode) tree.getModel().getRoot();
 				taskNodeIdMap = ((LoadJTreePanel) treePanel).getTaskIdMap(); 
@@ -195,35 +207,55 @@ public class EditGradingCriteria extends JFrame {
 						String[] arrayOfTask = taskString.split("/");
 						String taskName = arrayOfTask[0];
 						String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
+						totalTaskPerce.add(Double.valueOf(taskPerce));
 						Task task = new Task(taskId, 2, taskName, Double.valueOf(taskPerce));
-						ts.editTask(task);
-
+						//ts.editTask(task);
+						taskToBeEdited.add(task);
 					}
 					else {
 						String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
 						String[] arrayOfTask = taskString.split("/");
 						String taskName = arrayOfTask[0];
 						String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
+						totalTaskPerce.add(Double.valueOf(taskPerce));
 						Task task = new Task(0, 2, taskName, Double.valueOf(taskPerce));
+						taskToBeAdded.add(task);
+						taskNodeToBeAdded.add(taskNode);
 //						System.out.println(task.toString());
-						int taskId = ts.addTask(task);
+						//int taskId = ts.addTask(task);
+						//taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
+					}
+				}
+				if(!inputValidation(totalTaskPerce)) {
+					JOptionPane.showMessageDialog(null,"total Task percentage must be equal to 100");
+				}
+				else {
+					for(Task t: taskToBeEdited) {
+						ts.editTask(t);
+					}
+					for(int i = 0; i < taskToBeAdded.size(); i++) {
+						Task t = taskToBeAdded.get(i);
+						DefaultMutableTreeNode taskNode = (DefaultMutableTreeNode) taskNodeToBeAdded.get(i);
+						int taskId = ts.addTask(t);
 						taskNodeIdMap.put((DefaultMutableTreeNode)taskNode, taskId);
 					}
 				}
-				// get task id from db
-//				List<TaskDto> taskDtoList = ts.getTaskList(2);
-//				for (TaskDto tdto : taskDtoList) {
-//					String taskName = tdto.getTaskName();
-//					int taskId = tdto.getTaskId();
-//					taskNameIdMap.put(taskName, taskId);
-//				}
-				// add subtasks to db
+				
+				
+				
+				
+				
+				
 				subTaskNodeIdMap = ((LoadJTreePanel) treePanel).getSubTaskIdMap();
 				for (int i = 0; i < numOfTask; i++) {
-					TreeNode taskNode = root.getChildAt(i);				
-					//					String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
-					//					String[] arrayOfTask = taskString.split("/");
-					//					String taskName = arrayOfTask[0];
+					TreeNode taskNode = root.getChildAt(i);		
+					String taskString = (String) ((DefaultMutableTreeNode) taskNode).getUserObject();
+					String[] arrayOfTask = taskString.split("/");
+					
+					String taskPerce = arrayOfTask[1].substring(0, arrayOfTask[1].length() - 1);
+					Double target = Double.valueOf(taskPerce);
+					
+					
 					int taskId = taskNodeIdMap.get(taskNode);
 					int numOfSubTask = taskNode.getChildCount();
 					for (int j = 0; j < numOfSubTask; j++) {
@@ -235,18 +267,34 @@ public class EditGradingCriteria extends JFrame {
 							String[] arryOfSubTask = subTaskString.split("/");
 							String subTaskName = arryOfSubTask[0];
 							String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
+							totalSubTaskPerce.add(Double.valueOf(subTaskPerce));
 							SubTask subTask = new SubTask(subTaskId, subTaskName, taskId, Double.valueOf(subTaskPerce));
-							ts.editSubTask(subTask);
+							subTaskToBeEdited.add(subTask);
+							//ts.editSubTask(subTask);
 						}
 						else {
 							String subTaskString = (String) ((DefaultMutableTreeNode) subTaskNode).getUserObject();
 							String[] arryOfSubTask = subTaskString.split("/");
 							String subTaskName = arryOfSubTask[0];
 							String subTaskPerce = arryOfSubTask[1].substring(0, arryOfSubTask[1].length() - 1);
-							System.out.println("The double perce is " + subTaskPerce);
+							totalSubTaskPerce.add(Double.valueOf(subTaskPerce));
+							//System.out.println("The double perce is " + subTaskPerce);
 							SubTask subTask = new SubTask(0, subTaskName, taskId, Double.valueOf(subTaskPerce));
-							ts.addSubTask(subTask);
+							//ts.addSubTask(subTask);
+							subTaskToBeAdded.add(subTask);
 						}
+						if(!inputValidation(totalSubTaskPerce,target)) {
+							JOptionPane.showMessageDialog(null,"total subTask percentage must be equal to " + target);
+						}else {
+							for(SubTask sbt : subTaskToBeEdited) {
+								ts.editSubTask(sbt);
+							}
+							for(SubTask sbt: subTaskToBeAdded) {
+								ts.addSubTask(sbt);
+							}
+						}
+						
+						
 					}
 				}
 				
@@ -261,6 +309,34 @@ public class EditGradingCriteria extends JFrame {
 		this.setVisible(true);
 	}
 
+	protected boolean inputValidation(List<Double> list) {
+		double total = 0;
+		for(double d : list) {
+			total += d;
+		}
+		if(total != 100) {
+			return false;
+		}
+		else {
+			return true;
+		}
+		
+		
+	}
+	
+	protected boolean inputValidation(List<Double>list , double target) {
+		double total = 0;
+		for(double d : list) {
+			total += d;
+		}
+		if(total != target) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
 	public int getClassId() {
 		return classId;
 	}
