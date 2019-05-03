@@ -60,7 +60,6 @@ public class gradeView extends JFrame  {
         this.setTitle("Grade");
         this.setBounds(100,100,543,367);
 
-     
 
         this.setVisible(true);
     }
@@ -78,7 +77,11 @@ public class gradeView extends JFrame  {
         tablePanel.setLayout(new BorderLayout(0,0));
         JScrollPane scrollPane = new JScrollPane();
         tablePanel.add(scrollPane, BorderLayout.CENTER);
-        gradeTable = new JTable();
+        gradeTable = new JTable(){
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};;
       
         gradeTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         scrollPane.setViewportView(gradeTable);

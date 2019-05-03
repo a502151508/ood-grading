@@ -31,11 +31,36 @@ public class EditGradeView extends JFrame {
 	private List<Integer> subTaskIdList;
 	private HashMap<Integer, Integer> rowIndexGradeId = new HashMap<>();
 	private GradeService gs = new GradeServiceImpl();
-	
 
 	public EditGradeView(String columnName, int modifiedSubtaskId, List<StudentGradingDto> rowDataList,
 			List<Integer> subTaskIdList) {
-		this.gradeTable = new JTable();
+		this.gradeTable = new JTable() {
+			public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+
+			{
+				Double num = null;
+				try {
+					num = Double.parseDouble((String) aValue);
+					if (num > 100 || num < 0) {
+						aValue = "";
+						throw new Exception();
+					} else if (num < -100) {
+						aValue = "";
+						throw new Exception();
+					} else if (num >= -100 && num < 0) {
+						num = 100 + num;
+						aValue = num.toString();
+					}
+				} catch (NumberFormatException ex) {
+					ex.printStackTrace();
+					javax.swing.JOptionPane.showMessageDialog(null, "Only Number!");
+					return;
+				}catch(Exception e) {
+					javax.swing.JOptionPane.showMessageDialog(null, "Out of range");
+				}
+				super.setValueAt(aValue, rowIndex, columnIndex);
+			}
+		};
 		// this.orginalTable = originalGradeTable;
 		this.columnName = columnName;
 		this.modifiedSubtaskId = modifiedSubtaskId;
@@ -44,7 +69,6 @@ public class EditGradeView extends JFrame {
 
 		this.setLayout(new BorderLayout());
 		Container contentPane = this.getContentPane();
-		
 
 		JPanel tablePanel = createTablePanel();
 		contentPane.add(tablePanel, BorderLayout.CENTER);
@@ -102,12 +126,11 @@ public class EditGradeView extends JFrame {
 
 	private void setTableContent() {
 		DefaultTableModel tableModel = new DefaultTableModel() {
-			boolean[] canEdit = new boolean[]{
-                    false, false, true
-            };
+			boolean[] canEdit = new boolean[] { false, false, true };
+
 			public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
+				return canEdit[columnIndex];
+			}
 		};
 		tableModel.addColumn("Name");
 		tableModel.addColumn("BU Id");
