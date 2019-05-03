@@ -27,6 +27,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 	String lastName = "Fall 2019";
 	String BUID = "";
 	JButton switchClassButton, switchGradeButton;
+	JTextField searchField;
 	StudentService ss = new StudentServiceImpl();
 	private int classID;
 
@@ -102,8 +103,7 @@ public class StudentPanel extends JFrame implements ActionListener {
 						.createSequentialGroup().addContainerGap().addComponent(scrollPane, GroupLayout.PREFERRED_SIZE,
 								GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(14, Short.MAX_VALUE)));
-
-		JTextField searchField = new JTextField();
+		searchField = new JTextField();
 		searchField.setHorizontalAlignment(SwingConstants.CENTER);
 		searchField.setText("Enter Name/ID");
 		searchField.setBounds(6, 6, 180, 20);

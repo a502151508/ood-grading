@@ -27,4 +27,9 @@ public class ClassesDaoImpl extends BaseDaoImpl implements ClassesDao {
 		return data;
 	}
 
+	@Override
+	public int addClassAndGetId(String sql, Object[] params) {
+		return DBUtil.insertAndGetId(sql, params);
+	}
+
 }
