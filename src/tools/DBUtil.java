@@ -124,8 +124,7 @@ public class DBUtil {
 			for (int i = 0; i < params.length; i++) {
 				ps.setString(i + 1, String.valueOf(params[i]));
 			}
-			isSucceed = ps.execute();
-			System.out.println("update: " + sql);
+			isSucceed = ps.execute();			
 			ps.close();
 			conn.close();
 		} catch (SQLException e) {
