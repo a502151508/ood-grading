@@ -1,7 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -43,8 +44,6 @@ public class EditGradingCriteria extends JFrame {
 	Map<DefaultMutableTreeNode, Integer> taskNodeIdMap = new HashMap<>();
 	Map<DefaultMutableTreeNode, Integer> subTaskNodeIdMap = new HashMap<>();
 
-	
-
 	DefaultMutableTreeNode root = new DefaultMutableTreeNode("Grading Criteria");
 	DefaultMutableTreeNode assignment = new DefaultMutableTreeNode("Assignments/50%");
 	DefaultMutableTreeNode exam = new DefaultMutableTreeNode("Exams/50%");
@@ -58,11 +57,11 @@ public class EditGradingCriteria extends JFrame {
 	JButton saveButton = new JButton("Save");
 
 	public void init() {
-
+	
 		treePanel = new LoadJTreePanel(classId);
 		this.tree = ((LoadJTreePanel) treePanel).getTree();
-		this.getContentPane().add(treePanel, BorderLayout.WEST);
-
+		this.getContentPane().add(treePanel, BorderLayout.NORTH);
+		
 		this.setTitle("Grading Criteria");
 		tree.setRootVisible(false);
 		model = (DefaultTreeModel) tree.getModel();
@@ -99,7 +98,6 @@ public class EditGradingCriteria extends JFrame {
 		tree.addMouseListener(ml);
 
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(5, 1));
 
 		addParentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -130,7 +128,7 @@ public class EditGradingCriteria extends JFrame {
 				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 				EditCategory cateInfo = new EditCategory();
 				cateInfo.setVisible(true);
-				;
+				
 
 				JButton save = cateInfo.btnSave;
 				save.addActionListener(new ActionListener() {
@@ -150,10 +148,23 @@ public class EditGradingCriteria extends JFrame {
 		panel.add(addChildButton);
 
 		deleteButton.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent event) {
-				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-				if (selectedNode != null && selectedNode.getParent() != null) {
-					model.removeNodeFromParent(selectedNode);
+				try {
+					DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+					if (selectedNode != null && selectedNode.getParent() != null) {
+						if(taskNodeIdMap.containsKey(selectedNode)) {
+							ts.deleteTask(new Task(taskNodeIdMap.get(selectedNode), 0, null, 0));
+						}
+						else if (subTaskNodeIdMap.containsKey(selectedNode)) {
+							ts.deleteSubTask(new SubTask(subTaskNodeIdMap.get(selectedNode), null, 0, 0));
+						}
+						model.removeNodeFromParent(selectedNode);
+						
+					}
+				} catch (Exception ex) {
+					System.out.println(ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Please select a category!");
 				}
 			}
 		});
@@ -310,12 +321,11 @@ public class EditGradingCriteria extends JFrame {
 		});
 		panel.add(saveButton);
 
-		this.getContentPane().add(panel, BorderLayout.EAST);
+		this.getContentPane().add(panel, BorderLayout.SOUTH);
 		this.pack();
-	//	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
-
 	protected boolean inputValidation(List<Double> list) {
 		double total = 0;
 		for(double d : list) {
@@ -327,7 +337,6 @@ public class EditGradingCriteria extends JFrame {
 		else {
 			return true;
 		}
-		
 		
 	}
 	
@@ -343,7 +352,7 @@ public class EditGradingCriteria extends JFrame {
 			return true;
 		}
 	}
-	
+
 	public int getClassId() {
 		return classId;
 	}
@@ -351,9 +360,8 @@ public class EditGradingCriteria extends JFrame {
 	public void setClassId(int classId) {
 		this.classId = classId;
 	}
-	
 
-//	public static void main(String[] args) {
-//		new EditGradingCriteria().init();
-//	}
+	public static void main(String[] args) {
+		new EditGradingCriteria(2).init();
+	}
 }

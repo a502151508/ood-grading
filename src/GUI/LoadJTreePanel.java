@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -50,6 +51,7 @@ public class LoadJTreePanel extends JPanel {
 	}
 
 	public void init() {
+		setPreferredSize(new Dimension(300, 300));
 		taskIdMap = new HashMap<>();
 		subTaskIdMap = new HashMap<>();
 		List<TaskDto> tl = ts.getTaskList(classId);
